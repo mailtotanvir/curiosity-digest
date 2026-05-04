@@ -207,7 +207,7 @@ INDEX_HTML = """<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Weekly Brain Food</title>
+  <title>Weekly Curiosity Digest</title>
   <style>
     :root {
       --bg: #f8f9fa; --surface: #fff; --border: #e5e7eb;
@@ -282,7 +282,7 @@ INDEX_HTML = """<!doctype html>
 </head>
 <body>
 <header>
-  <h1>🧠 Weekly Brain Food</h1>
+  <h1>🧠 Weekly Curiosity Digest</h1>
   <p class="meta">
     Updated {{ now }} &nbsp;·&nbsp;
     {{ kept|length }} posts kept &nbsp;·&nbsp;
@@ -342,7 +342,7 @@ REJECTED_HTML = """<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Filtered posts — Brain Food</title>
+  <title>Filtered posts — Curiosity Digest</title>
   <style>
     body { font-family: system-ui,sans-serif; max-width:820px; margin:40px auto;
            padding:0 1.25rem 4rem; color:#111; line-height:1.6; }

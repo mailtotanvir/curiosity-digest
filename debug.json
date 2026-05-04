@@ -1,6 +1,7 @@
 {
   "kept": [
     {
+      "id": "ecb0d5f5b259",
       "source": "Quanta Magazine",
       "title": "The Hidden Mathematical Dance Inside Plant Cells",
       "link": "https://www.quantamagazine.org/the-hidden-mathematical-dance-inside-plant-cells-20260504/",
@@ -12,6 +13,31 @@
       "reason": "category: biology"
     },
     {
+      "id": "718e0afbbbcf",
+      "source": "New Scientist",
+      "title": "Tiny frozen world unexpectedly appears to have an atmosphere",
+      "link": "https://www.newscientist.com/article/2525175-tiny-frozen-world-unexpectedly-appears-to-have-an-atmosphere/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
+      "category": "Science",
+      "date": "2026-05-04",
+      "date_str": "May 04",
+      "summary": "A 500-kilometre-wide object in a similar orbit to Pluto challenges our assumptions about small bodies in the outer solar system",
+      "feed_cats": "",
+      "reason": "keyword match"
+    },
+    {
+      "id": "b699d3ac7c8d",
+      "source": "New Scientist",
+      "title": "300-year-old experiment could become world's best dark matter detector",
+      "link": "https://www.newscientist.com/article/2524958-300-year-old-experiment-could-become-worlds-best-dark-matter-detector/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
+      "category": "Science",
+      "date": "2026-05-04",
+      "date_str": "May 04",
+      "summary": "An update to an experiment run by Henry Cavendish in 1773 could be a cheaper and faster way to spot a potential dark matter particle \u2013 and may be 10,000 times more sensitive",
+      "feed_cats": "",
+      "reason": "keyword match"
+    },
+    {
+      "id": "f6c730a5d341",
       "source": "New Scientist",
       "title": "The greatest David Attenborough documentaries you really need to watch",
       "link": "https://www.newscientist.com/article/2525104-the-greatest-david-attenborough-documentaries-you-really-need-to-watch/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -23,6 +49,19 @@
       "reason": "keyword match"
     },
     {
+      "id": "61df2cba8fdb",
+      "source": "NASA News",
+      "title": "NASA Fosters Development of Lunar Resource-Seeking Technologies",
+      "link": "https://www.nasa.gov/technology/nasa-fosters-development-of-lunar-resource-seeking-technologies/",
+      "category": "Astronomy",
+      "date": "2026-05-04",
+      "date_str": "May 04",
+      "summary": "To support long-duration missions to the Moon and Mars, NASA and industry are developing technologies that can extract resources such as hydrogen and helium-3 from lunar soil, known as regolith. This capability, known as\u2026",
+      "feed_cats": "technology, ames research center, armstrong flight research center, flight opportunities program, game changing development program, langley research center, space technology mission directorate",
+      "reason": "trusted source (Astronomy)"
+    },
+    {
+      "id": "e979e0cd9efb",
       "source": "NASA News",
       "title": "NASA Welcomes Malta as Newest Artemis Accords Signatory",
       "link": "https://www.nasa.gov/missions/artemis/nasa-welcomes-malta-as-newest-artemis-accords-signatory/",
@@ -34,6 +73,7 @@
       "reason": "trusted source (Astronomy)"
     },
     {
+      "id": "0f1da7fba270",
       "source": "NASA News",
       "title": "Breaking Barriers at 3rd Annual Findings from the Field Symposium",
       "link": "https://science.nasa.gov/learning-resources/science-activation/breaking-barriers-at-3rd-annual-findings-from-the-field-symposium/",
@@ -45,6 +85,7 @@
       "reason": "trusted source (Astronomy)"
     },
     {
+      "id": "c9113e6ad2d0",
       "source": "NASA News",
       "title": "Blue Origin Moon Lander Completes Testing at NASA Vacuum Chamber",
       "link": "https://www.nasa.gov/missions/artemis/blue-origin-moon-lander-completes-testing-at-nasa-vacuum-chamber/",
@@ -56,6 +97,7 @@
       "reason": "trusted source (Astronomy)"
     },
     {
+      "id": "e2982f2dc49c",
       "source": "NASA News",
       "title": "Hubble Spots a Starry Spiral",
       "link": "https://www.nasa.gov/image-article/hubble-spots-a-starry-spiral/",
@@ -67,6 +109,7 @@
       "reason": "trusted source (Astronomy)"
     },
     {
+      "id": "f9178f6efa0f",
       "source": "NASA News",
       "title": "For NASA\u2019s TESS, Stellar Eclipses Shed Light on Possible New Worlds",
       "link": "https://science.nasa.gov/missions/tess/for-nasas-tess-stellar-eclipses-shed-light-on-possible-new-worlds/",
@@ -78,6 +121,7 @@
       "reason": "trusted source (Astronomy)"
     },
     {
+      "id": "fac81b542265",
       "source": "NASA News",
       "title": "LAGEOS: An Earth Science Mission Built for Enduring Precision",
       "link": "https://www.nasa.gov/missions/lageos/lageos-an-earth-science-mission-built-for-enduring-precision/",
@@ -89,6 +133,7 @@
       "reason": "trusted source (Astronomy)"
     },
     {
+      "id": "885cb2cd96ef",
       "source": "NASA News",
       "title": "Record-Setting Retreat of Hektoria Glacier",
       "link": "https://science.nasa.gov/earth/earth-observatory/record-setting-retreat-of-hektoria-glacier/",
@@ -100,6 +145,7 @@
       "reason": "trusted source (Astronomy)"
     },
     {
+      "id": "f551c0086122",
       "source": "Numberphile",
       "title": "Entirely Ridiculously Big Numbers - Numberphile",
       "link": "https://www.youtube.com/watch?v=SAtFZPtbMpI",
@@ -111,6 +157,7 @@
       "reason": "trusted source (Mathematics)"
     },
     {
+      "id": "58e33988e0c0",
       "source": "Cleo Abram",
       "title": "This Machine Grows Diamonds",
       "link": "https://www.youtube.com/shorts/B9ocddyGfo8",
@@ -122,6 +169,7 @@
       "reason": "trusted source (Technology)"
     },
     {
+      "id": "4c7c5ffc1378",
       "source": "Nat. History Museum",
       "title": "Our David Attenborough specimens: Nature, knowledge and a lasting legacy",
       "link": "https://www.youtube.com/watch?v=ToGZ8ZkUaxY",
@@ -133,6 +181,7 @@
       "reason": "trusted source (Nature)"
     },
     {
+      "id": "c1f9c5495387",
       "source": "Veritasium",
       "title": "Can a quantum sensor detect your heartbeat from 60 km away?",
       "link": "https://www.youtube.com/watch?v=SVTPv4sI_Jc",
@@ -144,6 +193,7 @@
       "reason": "trusted source (Physics)"
     },
     {
+      "id": "352686b90a9e",
       "source": "Nat. History Museum",
       "title": "Finding this alive is like finding a plesiosaur in your bathtub #NHM #Mollusca #Extinct",
       "link": "https://www.youtube.com/shorts/lx3xgP-iwEs",
@@ -155,6 +205,7 @@
       "reason": "trusted source (Nature)"
     },
     {
+      "id": "d281bda75d82",
       "source": "Cleo Abram",
       "title": "Why Antarctica Has SO MANY Meteorites",
       "link": "https://www.youtube.com/shorts/5LJ1cxjQhyE",
@@ -166,6 +217,7 @@
       "reason": "trusted source (Technology)"
     },
     {
+      "id": "650148141187",
       "source": "The Action Lab",
       "title": "Gravity Assists Are Basically Free Energy",
       "link": "https://www.youtube.com/watch?v=1baBzd1XPkU",
@@ -177,6 +229,7 @@
       "reason": "trusted source (Experiments)"
     },
     {
+      "id": "a158ae39a351",
       "source": "Nat. History Museum",
       "title": "What is parthenogenesis? #NHM #Lizard #Reproduction",
       "link": "https://www.youtube.com/shorts/Y2E-6T225MU",
@@ -188,6 +241,7 @@
       "reason": "trusted source (Nature)"
     },
     {
+      "id": "fac89edf1e6e",
       "source": "Quanta Magazine",
       "title": "A Treasure Trove of Cambrian Fossils Rewrites the Story of Early Life",
       "link": "https://www.quantamagazine.org/a-treasure-trove-of-cambrian-fossils-rewrites-the-story-of-early-life-20260501/",
@@ -199,6 +253,7 @@
       "reason": "category: biology"
     },
     {
+      "id": "ebce07a56064",
       "source": "New Scientist",
       "title": "An unorthodox version of quantum theory could reveal what reality is",
       "link": "https://www.newscientist.com/article/2524665-an-unorthodox-version-of-quantum-theory-could-reveal-what-reality-is/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -210,6 +265,7 @@
       "reason": "keyword match"
     },
     {
+      "id": "faeaeca4c528",
       "source": "New Scientist",
       "title": "2026 will be the hottest year on record, leading scientist predicts",
       "link": "https://www.newscientist.com/article/2525229-2026-will-be-the-hottest-year-on-record-leading-scientist-predicts/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -221,6 +277,7 @@
       "reason": "keyword match"
     },
     {
+      "id": "0ccff97b95ec",
       "source": "New Scientist",
       "title": "NHS England rushes to hide software over AI hacking fears",
       "link": "https://www.newscientist.com/article/2524962-nhs-england-rushes-to-hide-software-over-ai-hacking-fears/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -232,6 +289,7 @@
       "reason": "keyword match"
     },
     {
+      "id": "bfd65405c666",
       "source": "New Scientist",
       "title": "Why I explore our inevitable love for robots in my novel Luminous",
       "link": "https://www.newscientist.com/article/2524931-why-i-explore-our-inevitable-love-for-robots-in-my-novel-luminous/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -243,6 +301,7 @@
       "reason": "keyword match"
     },
     {
+      "id": "1137097ba38d",
       "source": "New Scientist",
       "title": "Read an extract from Luminous by Silvia Park",
       "link": "https://www.newscientist.com/article/2524921-read-an-extract-from-luminous-by-silvia-park/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -254,6 +313,7 @@
       "reason": "keyword match"
     },
     {
+      "id": "0de7590d3ef3",
       "source": "New Scientist",
       "title": "Will Colombia summit kick-start the end of the fossil fuel era?",
       "link": "https://www.newscientist.com/article/2525033-will-colombia-summit-kick-start-the-end-of-the-fossil-fuel-era/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -265,6 +325,7 @@
       "reason": "keyword match"
     },
     {
+      "id": "2f54870bfd30",
       "source": "NASA News",
       "title": "NASA Kennedy Center Director Announces Plans to Retire",
       "link": "https://www.nasa.gov/news-release/nasa-kennedy-center-director-announces-plans-to-retire/",
@@ -276,6 +337,7 @@
       "reason": "trusted source (Astronomy)"
     },
     {
+      "id": "49f6fad8fe9d",
       "source": "NASA News",
       "title": "NASA Artemis II Crew Rings Nasdaq Closing Bell",
       "link": "https://www.nasa.gov/image-article/nasa-artemis-ii-crew-rings-nasdaq-closing-bell/",
@@ -287,17 +349,7 @@
       "reason": "trusted source (Astronomy)"
     },
     {
-      "source": "NASA News",
-      "title": "Key Support Equipment Arrives at Kennedy for Roman Space Telescope",
-      "link": "https://www.nasa.gov/image-article/key-support-equipment-arrives-at-kennedy-for-roman-space-telescope/",
-      "category": "Astronomy",
-      "date": "2026-05-01",
-      "date_str": "May 01",
-      "summary": "Technicians at NASA\u2019s Payload Hazardous Servicing Facility (PHSF) at the agency\u2019s Kennedy Space Center in Florida offloaded eight high-efficiency particulate air (HEPA) wall modules and other ground support equipment on \u2026",
-      "feed_cats": "dark energy, kennedy space center, launch services program, nancy grace roman space telescope",
-      "reason": "trusted source (Astronomy)"
-    },
-    {
+      "id": "f7158881f18f",
       "source": "Kurzgesagt",
       "title": "Pigeons Are GPS Drones",
       "link": "https://www.youtube.com/shorts/RniYUmKs93U",
@@ -309,6 +361,7 @@
       "reason": "trusted source (Science)"
     },
     {
+      "id": "e2f5db904201",
       "source": "Cleo Abram",
       "title": "Our Brains Got Bigger. Now They\u2019re Shrinking?",
       "link": "https://www.youtube.com/shorts/dqazxW8R5BY",
@@ -320,6 +373,7 @@
       "reason": "trusted source (Technology)"
     },
     {
+      "id": "6c4a3ae7f4f9",
       "source": "Sick Science!",
       "title": "Creating Liquid Sandwiches With Just Three Ingredients...",
       "link": "https://www.youtube.com/shorts/NLahOD9N6kY",
@@ -331,6 +385,7 @@
       "reason": "trusted source (Experiments)"
     },
     {
+      "id": "2ad0cd4f22aa",
       "source": "Nat. History Museum",
       "title": "Golden eagles to alien microbes | Nature news you need to know",
       "link": "https://www.youtube.com/watch?v=9XEXBuWIs7I",
@@ -342,6 +397,7 @@
       "reason": "trusted source (Nature)"
     },
     {
+      "id": "4e4dea004bbf",
       "source": "Quanta Magazine",
       "title": "What Can We Gain by Losing Infinity?",
       "link": "https://www.quantamagazine.org/what-can-we-gain-by-losing-infinity-20260429/",
@@ -353,6 +409,7 @@
       "reason": "category: mathematics"
     },
     {
+      "id": "6ab24aa436ab",
       "source": "Quanta Magazine",
       "title": "Why Math\u2019s Final Axiom Proved So Controversial",
       "link": "https://www.quantamagazine.org/why-maths-final-axiom-proved-so-controversial-20260429/",
@@ -364,6 +421,7 @@
       "reason": "category: mathematics"
     },
     {
+      "id": "0cfbb8937ef9",
       "source": "New Scientist",
       "title": "Why dinosaurs lived much more complex lives than we thought",
       "link": "https://www.newscientist.com/article/2522448-why-dinosaurs-lived-much-more-complex-lives-than-we-thought/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -375,6 +433,7 @@
       "reason": "keyword match"
     },
     {
+      "id": "e5b5d090bb5a",
       "source": "New Scientist",
       "title": "Our verdict on Red Mars: Mostly great, with a few quibbles",
       "link": "https://www.newscientist.com/article/2524419-our-verdict-on-red-mars-mostly-great-with-a-few-quibbles/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -386,6 +445,7 @@
       "reason": "keyword match"
     },
     {
+      "id": "6cf7161cfcc0",
       "source": "New Scientist",
       "title": "Is an AI version of Mark Zuckerberg \u2013 or any boss \u2013 a good plan?",
       "link": "https://www.newscientist.com/article/mg27035932-100-is-an-ai-version-of-mark-zuckerberg-or-any-boss-a-good-plan/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -397,28 +457,7 @@
       "reason": "keyword match"
     },
     {
-      "source": "New Scientist",
-      "title": "Weird 'transdimensional' state of matter is neither 2D nor 3D",
-      "link": "https://www.newscientist.com/article/2524690-weird-transdimensional-state-of-matter-is-neither-2d-nor-3d/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
-      "category": "Science",
-      "date": "2026-04-29",
-      "date_str": "Apr 29",
-      "summary": "An experiment with a carbon material in a magnetic field has revealed a novel way for electrons to move, which doesn't fully belong in two or three spatial dimensions",
-      "feed_cats": "",
-      "reason": "keyword match"
-    },
-    {
-      "source": "New Scientist",
-      "title": "Scorpions reinforce their claws and stingers with metals",
-      "link": "https://www.newscientist.com/article/2524699-scorpions-reinforce-their-claws-and-stingers-with-metals/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
-      "category": "Science",
-      "date": "2026-04-29",
-      "date_str": "Apr 29",
-      "summary": "Many scorpion species use blends of iron, zinc and manganese to enhance the toughness of their deadly weaponry",
-      "feed_cats": "",
-      "reason": "keyword match"
-    },
-    {
+      "id": "1928f4d7cf66",
       "source": "Veritasium",
       "title": "The Disaster I Never Imagined Having To Worry About",
       "link": "https://www.youtube.com/watch?v=ksn5yrsC3Wg",
@@ -430,6 +469,7 @@
       "reason": "trusted source (Physics)"
     },
     {
+      "id": "5deac0fcabc6",
       "source": "Cleo Abram",
       "title": "How They Build Underwater Tunnels",
       "link": "https://www.youtube.com/shorts/pG99B0ui06s",
@@ -441,6 +481,7 @@
       "reason": "trusted source (Technology)"
     },
     {
+      "id": "1376bf4869f8",
       "source": "New Scientist",
       "title": "Is consciousness more fundamental to reality than quantum physics?",
       "link": "https://www.newscientist.com/article/2523209-is-consciousness-more-fundamental-to-reality-than-quantum-physics/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -452,6 +493,7 @@
       "reason": "keyword match"
     },
     {
+      "id": "f71a307e64d1",
       "source": "Nat. History Museum",
       "title": "Why are they called praying mantises? \ud83d\ude4f #NHM #Insects #Nature",
       "link": "https://www.youtube.com/shorts/pJfjRiIU35s",
@@ -461,21 +503,35 @@
       "summary": "If you take a closer look at their legs you can understand why Carl Linnaeus chose the name, Mantis religiosa.\n\n#NaturalHistoryMuseum #Mantis #Collection\n----------------\nSubscribe to our channel for the latest natural h\u2026",
       "feed_cats": "",
       "reason": "trusted source (Nature)"
-    },
-    {
-      "source": "Stand-up Maths",
-      "title": "What is up with UK bridge height signs?",
-      "link": "https://www.youtube.com/watch?v=kH_bSvf7EVA",
-      "category": "Mathematics",
-      "date": "2026-04-27",
-      "date_str": "Apr 27",
-      "summary": "Support the show filming, pre-order the download and get silly perks: https://www.kickstarter.com/projects/standupmaths/getting-triggy-with-it/\n\nOr you can just come and see me on tour in October: http://standupmaths.com\u2026",
-      "feed_cats": "",
-      "reason": "trusted source (Mathematics)"
     }
   ],
   "rejected": [
     {
+      "id": "cd11fa1e2527",
+      "source": "New Scientist",
+      "title": "Honey has been used as medicine for centuries \u2013 does it really work?",
+      "link": "https://www.newscientist.com/article/2525272-honey-has-been-used-as-medicine-for-centuries-does-it-really-work/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
+      "category": "\u2014",
+      "date": "2026-05-04",
+      "date_str": "May 04",
+      "summary": "It is appealing to think something as simple as honey could cure a cold or prevent hay fever, but is there evidence to back up honey\u2019s health benefits? Columnist Alice Klein finds that it has legitimate medicinal uses, d\u2026",
+      "feed_cats": "",
+      "reason": "no match"
+    },
+    {
+      "id": "d77fc455cd8f",
+      "source": "New Scientist",
+      "title": "A lost ancient script reveals how writing as we know it really began",
+      "link": "https://www.newscientist.com/article/2524042-a-lost-ancient-script-reveals-how-writing-as-we-know-it-really-began/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
+      "category": "\u2014",
+      "date": "2026-05-04",
+      "date_str": "May 04",
+      "summary": "A long-overlooked writing system from 5000 years ago is still largely undeciphered, but could mark the moment humans first represented their speech with written words",
+      "feed_cats": "",
+      "reason": "no match"
+    },
+    {
+      "id": "ec2f028c15f7",
       "source": "New Scientist",
       "title": "Prebiotic chewing gum could be helpful for gum disease",
       "link": "https://www.newscientist.com/article/2524950-prebiotic-chewing-gum-could-be-helpful-for-gum-disease/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -487,6 +543,7 @@
       "reason": "no match"
     },
     {
+      "id": "68ef7b797e9f",
       "source": "New Scientist",
       "title": "Smart underwear detects lactose intolerance by tracking your farts",
       "link": "https://www.newscientist.com/article/2525189-smart-underwear-detects-lactose-intolerance-by-tracking-your-farts/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -498,6 +555,7 @@
       "reason": "no match"
     },
     {
+      "id": "e5146ac9c655",
       "source": "New Scientist",
       "title": "The 4 biggest myths about hydration, according to an expert",
       "link": "https://www.newscientist.com/article/2523919-the-4-biggest-myths-about-hydration-according-to-an-expert/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -509,6 +567,7 @@
       "reason": "no match"
     },
     {
+      "id": "d7e77eb785ce",
       "source": "New Scientist",
       "title": "Oak trees use delaying tactics to thwart hungry caterpillars",
       "link": "https://www.newscientist.com/article/2524968-oak-trees-use-delaying-tactics-to-thwart-hungry-caterpillars/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -520,6 +579,7 @@
       "reason": "no match"
     },
     {
+      "id": "ae06fb520fd9",
       "source": "New Scientist",
       "title": "The rings of Uranus are even stranger than we thought",
       "link": "https://www.newscientist.com/article/2524832-the-rings-of-uranus-are-even-stranger-than-we-thought/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -531,6 +591,7 @@
       "reason": "no match"
     },
     {
+      "id": "da55159d6d9f",
       "source": "New Scientist",
       "title": "'Green' cryptocurrency uses 18 times more energy than makers claim",
       "link": "https://www.newscientist.com/article/2523912-green-cryptocurrency-uses-18-times-more-energy-than-makers-claim/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -542,6 +603,7 @@
       "reason": "blocked keyword"
     },
     {
+      "id": "727a32721cb3",
       "source": "New Scientist",
       "title": "Your oral microbiome could affect your weight, liver and diabetes risk",
       "link": "https://www.newscientist.com/article/2524866-your-oral-microbiome-could-affect-your-weight-liver-and-diabetes-risk/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -553,6 +615,7 @@
       "reason": "no match"
     },
     {
+      "id": "9b43533377db",
       "source": "New Scientist",
       "title": "We have figured out a new way to send messages into the past",
       "link": "https://www.newscientist.com/article/2524371-we-have-figured-out-a-new-way-to-send-messages-into-the-past/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -564,6 +627,7 @@
       "reason": "no match"
     },
     {
+      "id": "42d3b8f392bf",
       "source": "New Scientist",
       "title": "Human heads have changed shape a lot in the past 100 years",
       "link": "https://www.newscientist.com/article/2524895-human-heads-have-changed-shape-a-lot-in-the-past-100-years/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -575,6 +639,7 @@
       "reason": "no match"
     },
     {
+      "id": "9d0f716d4274",
       "source": "New Scientist",
       "title": "Doubts cast over 'wild' claim that magnetic control can turn on genes",
       "link": "https://www.newscientist.com/article/2524432-doubts-cast-over-wild-claim-that-magnetic-control-can-turn-on-genes/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -586,6 +651,7 @@
       "reason": "no match"
     },
     {
+      "id": "a57546d5da66",
       "source": "New Scientist",
       "title": "The best new science fiction books of May 2026",
       "link": "https://www.newscientist.com/article/2524887-the-best-new-science-fiction-books-of-may-2026/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -597,6 +663,7 @@
       "reason": "no match"
     },
     {
+      "id": "973b722b818c",
       "source": "New Scientist",
       "title": "The rich but complicated legacy of genome pioneer Craig Venter",
       "link": "https://www.newscientist.com/article/2524928-the-rich-but-complicated-legacy-of-genome-pioneer-craig-venter/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -608,6 +675,7 @@
       "reason": "no match"
     },
     {
+      "id": "d5c746db9bfe",
       "source": "New Scientist",
       "title": "Ann Leckie continues to shine with new sci-fi novel Radiant Star",
       "link": "https://www.newscientist.com/article/mg27035931-800-ann-leckie-continues-to-shine-with-new-sci-fi-novel-radiant-star/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -619,6 +687,7 @@
       "reason": "no match"
     },
     {
+      "id": "fe411471657d",
       "source": "New Scientist",
       "title": "Thought-provoking photographs capture what it feels like to have ADHD",
       "link": "https://www.newscientist.com/article/2523950-thought-provoking-photographs-capture-what-it-feels-like-to-have-adhd/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
@@ -626,28 +695,6 @@
       "date": "2026-04-29",
       "date_str": "Apr 29",
       "summary": "These unusual images were created by visual artist Daniel Regan by submerging Polaroid photographs in his ADHD medication, to represent his experiences with the condition through art",
-      "feed_cats": "",
-      "reason": "no match"
-    },
-    {
-      "source": "New Scientist",
-      "title": "Simple treatment tweak drastically reduces blood loss from severe cuts",
-      "link": "https://www.newscientist.com/article/2524800-simple-treatment-tweak-drastically-reduces-blood-loss-from-severe-cuts/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
-      "category": "\u2014",
-      "date": "2026-04-29",
-      "date_str": "Apr 29",
-      "summary": "A procedure that could be done in half an hour, and prepared ahead of time, could seriously reduce blood loss from severe wounds, such as during surgery",
-      "feed_cats": "",
-      "reason": "no match"
-    },
-    {
-      "source": "New Scientist",
-      "title": "The chips in your phone are probably broken \u2013 and that's a good thing",
-      "link": "https://www.newscientist.com/article/2523909-the-chips-in-your-phone-are-probably-broken-and-thats-a-good-thing/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
-      "category": "\u2014",
-      "date": "2026-04-29",
-      "date_str": "Apr 29",
-      "summary": "Reports suggest that Apple is using defective chips originally destined for high-end devices to create its latest affordable laptop. Reusing partially broken chips is common practice for all device makers and produces le\u2026",
       "feed_cats": "",
       "reason": "no match"
     }

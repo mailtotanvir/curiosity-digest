@@ -35,6 +35,17 @@
     },
     {
       "source": "NASA News",
+      "title": "NASA Welcomes Malta as Newest Artemis Accords Signatory",
+      "link": "https://www.nasa.gov/missions/artemis/nasa-welcomes-malta-as-newest-artemis-accords-signatory/",
+      "category": "Astronomy",
+      "date": "2026-05-04",
+      "date_str": "May 04",
+      "summary": "The Republic of Malta became the 65th signatory to the Artemis Accords on Monday during a ceremony in the town of Kalkara with NASA and U.S. Department of State officials present. \u201cToday, it\u2019s my pleasure to welcome the \u2026",
+      "feed_cats": "artemis, artemis accords, office of international and interagency relations (oiir)",
+      "reason": "trusted source (Astronomy)"
+    },
+    {
+      "source": "NASA News",
       "title": "Breaking Barriers at 3rd Annual Findings from the Field Symposium",
       "link": "https://science.nasa.gov/learning-resources/science-activation/breaking-barriers-at-3rd-annual-findings-from-the-field-symposium/",
       "category": "Astronomy",
@@ -298,17 +309,6 @@
       "reason": "trusted source (Astronomy)"
     },
     {
-      "source": "NASA News",
-      "title": "NASA\u2019s STORIE Mission to Tell Tale of Earth\u2019s Ring Current",
-      "link": "https://science.nasa.gov/science-research/heliophysics/nasas-storie-mission-to-tell-tale-of-earths-ring-current/",
-      "category": "Astronomy",
-      "date": "2026-05-01",
-      "date_str": "May 01",
-      "summary": "Earth\u2019s magnetic field is like a powerful trap. It lures electrically charged particles in space, near our planet, and snares them in an invisible, doughnut-shaped pen around Earth known as the ring current. This captive\u2026",
-      "feed_cats": "earth's magnetic field, goddard space flight center, heliophysics, heliophysics division, international space station (iss), iss research, magnetosphere, space weather, the sun",
-      "reason": "trusted source (Astronomy)"
-    },
-    {
       "source": "Kurzgesagt",
       "title": "Pigeons Are GPS Drones",
       "link": "https://www.youtube.com/shorts/RniYUmKs93U",
@@ -472,28 +472,6 @@
       "summary": "Support the show filming, pre-order the download and get silly perks: https://www.kickstarter.com/projects/standupmaths/getting-triggy-with-it/\n\nOr you can just come and see me on tour in October: http://standupmaths.com\u2026",
       "feed_cats": "",
       "reason": "trusted source (Mathematics)"
-    },
-    {
-      "source": "Sick Science!",
-      "title": "Make Exploding Film Canisters??",
-      "link": "https://www.youtube.com/watch?v=XZ6j5-nBFyc",
-      "category": "Experiments",
-      "date": "2026-04-27",
-      "date_str": "Apr 27",
-      "summary": "Steve shows off a simple trick to create film canisters that explode with just two ingredients...\n\nWhat\u2019s Steve doing now? \u25ba https://linktr.ee/stevespangler\nFor business inquiries, contact +1-855-228-8780 or steve@steves\u2026",
-      "feed_cats": "",
-      "reason": "trusted source (Experiments)"
-    },
-    {
-      "source": "Sick Science!",
-      "title": "Hex Nuts Tied to a Bowling Ball... Save The Wine Glasses? Why?",
-      "link": "https://www.youtube.com/shorts/IXha1QTP6vM",
-      "category": "Experiments",
-      "date": "2026-04-27",
-      "date_str": "Apr 27",
-      "summary": "Steve shows off a trick where hex nuts that are 1/14th the weight of a bowling ball stop it from demolishing wine glasses.\n\n#learnonyoutube #stevespangler #handsonscience \n\nWhat\u2019s Steve doing now? \u25ba https://linktr.ee/ste\u2026",
-      "feed_cats": "",
-      "reason": "trusted source (Experiments)"
     }
   ],
   "rejected": [

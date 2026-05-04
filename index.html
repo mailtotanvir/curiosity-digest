@@ -1,41 +1,717 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Weekly Brain Food</title>
   <style>
-    body {
-      font-family: system-ui, sans-serif;
-      background: #0f172a;
-      color: #94a3b8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-      text-align: center;
-      padding: 2rem;
+    :root {
+      --bg: #f8f9fa; --surface: #fff; --border: #e5e7eb;
+      --accent: #0a58ca; --muted: #6b7280; --tag-bg: #eff6ff;
+      --tag-color: #1d4ed8; --heading: #111827;
     }
-    h1 { color: #f1f5f9; font-size: 1.75rem; margin-bottom: .5rem; }
-    p  { line-height: 1.7; max-width: 400px; }
-    code {
-      background: #1e293b;
-      padding: 2px 7px;
-      border-radius: 4px;
-      font-size: .9em;
-      color: #60a5fa;
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a; --surface: #1e293b; --border: #334155;
+        --accent: #60a5fa; --muted: #94a3b8; --tag-bg: #1e3a5f;
+        --tag-color: #93c5fd; --heading: #f1f5f9;
+      }
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg); color: var(--heading);
+      max-width: 820px; margin: 0 auto; padding: 2rem 1.25rem 4rem;
+      line-height: 1.6;
+    }
+    header { margin-bottom: 2rem; }
+    h1 { font-size: 1.75rem; font-weight: 800; margin-bottom: .3rem; }
+    .meta { color: var(--muted); font-size: .875rem; }
+    .meta a { color: var(--accent); text-decoration: none; }
+    .meta a:hover { text-decoration: underline; }
+
+    /* Filter tabs */
+    .filters {
+      display: flex; flex-wrap: wrap; gap: .4rem;
+      margin: 1.5rem 0;
+    }
+    .filter-btn {
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--muted); border-radius: 999px;
+      padding: .3rem .85rem; font-size: .8rem; cursor: pointer;
+      transition: all .15s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      border-color: var(--accent); color: var(--accent);
+      background: var(--tag-bg);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.1rem 1.25rem;
+      margin-bottom: .85rem; transition: border-color .15s;
+    }
+    .card:hover { border-color: var(--accent); }
+    .card-meta {
+      display: flex; align-items: center; gap: .5rem;
+      font-size: .78rem; color: var(--muted); margin-bottom: .4rem;
+      flex-wrap: wrap;
+    }
+    .tag {
+      background: var(--tag-bg); color: var(--tag-color);
+      border-radius: 4px; padding: 1px 7px; font-size: .72rem;
+      font-weight: 500;
+    }
+    .card h3 { font-size: 1rem; font-weight: 600; margin-bottom: .35rem; }
+    .card h3 a { color: var(--heading); text-decoration: none; }
+    .card h3 a:hover { color: var(--accent); }
+    .card p { font-size: .875rem; color: var(--muted); }
+
+    .empty { text-align: center; color: var(--muted); padding: 3rem 0; }
+    footer {
+      margin-top: 3rem; padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: .78rem; color: var(--muted); text-align: center;
     }
   </style>
 </head>
 <body>
-  <div>
-    <div style="font-size:2.5rem;margin-bottom:1rem">🧠</div>
-    <h1>Weekly Brain Food</h1>
-    <p>First digest hasn't run yet.<br>
-       Go to the <strong>Actions</strong> tab on GitHub,
-       click <strong>Weekly Science Page → Run workflow</strong>
-       and this page will update in about a minute.</p>
+<header>
+  <h1>🧠 Weekly Brain Food</h1>
+  <p class="meta">
+    Updated May 04, 2026 at 17:42 UTC &nbsp;·&nbsp;
+    45 posts kept &nbsp;·&nbsp;
+    <a href="rejected.html">16 filtered out →</a>
+  </p>
+</header>
+
+<div class="filters" id="filters">
+  <button class="filter-btn active" data-cat="all">All</button>
+  
+  <button class="filter-btn" data-cat="Astronomy">Astronomy</button>
+  
+  <button class="filter-btn" data-cat="Biology">Biology</button>
+  
+  <button class="filter-btn" data-cat="Experiments">Experiments</button>
+  
+  <button class="filter-btn" data-cat="Mathematics">Mathematics</button>
+  
+  <button class="filter-btn" data-cat="Nature">Nature</button>
+  
+  <button class="filter-btn" data-cat="Physics">Physics</button>
+  
+  <button class="filter-btn" data-cat="Science">Science</button>
+  
+  <button class="filter-btn" data-cat="Technology">Technology</button>
+  
+</div>
+
+<div id="cards">
+
+  
+  <div class="card" data-cat="Biology">
+    <div class="card-meta">
+      <span>Quanta Magazine</span>
+      <span>·</span>
+      <span>May 04</span>
+      <span class="tag">Biology</span>
+      <span class="tag" style="opacity:.65">category: biology</span>
+    </div>
+    <h3><a href="https://www.quantamagazine.org/the-hidden-mathematical-dance-inside-plant-cells-20260504/" target="_blank" rel="noopener">The Hidden Mathematical Dance Inside Plant Cells</a></h3>
+    <p>The sunlight-collecting organelles known as chloroplasts solve a packing problem: how to optimize photosynthesis without sustaining damage from dangerously intense rays.            The post The Hidden Mathematical Dance …</p>
   </div>
+  
+  <div class="card" data-cat="Science">
+    <div class="card-meta">
+      <span>New Scientist</span>
+      <span>·</span>
+      <span>May 04</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.65">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2524958-300-year-old-experiment-could-become-worlds-best-dark-matter-detector/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home" target="_blank" rel="noopener">300-year-old experiment could become world's best dark matter detector</a></h3>
+    <p>An update to an experiment run by Henry Cavendish in 1773 could be a cheaper and faster way to spot a potential dark matter particle – and may be 10,000 times more sensitive</p>
+  </div>
+  
+  <div class="card" data-cat="Science">
+    <div class="card-meta">
+      <span>New Scientist</span>
+      <span>·</span>
+      <span>May 04</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.65">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2525104-the-greatest-david-attenborough-documentaries-you-really-need-to-watch/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home" target="_blank" rel="noopener">The greatest David Attenborough documentaries you really need to watch</a></h3>
+    <p>To mark David Attenborough turning 100, New Scientist staff have been set a tricky task: pick your favourite of his many amazing documentaries...</p>
+  </div>
+  
+  <div class="card" data-cat="Astronomy">
+    <div class="card-meta">
+      <span>NASA News</span>
+      <span>·</span>
+      <span>May 04</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.65">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://science.nasa.gov/learning-resources/science-activation/breaking-barriers-at-3rd-annual-findings-from-the-field-symposium/" target="_blank" rel="noopener">Breaking Barriers at 3rd Annual Findings from the Field Symposium</a></h3>
+    <p>This year’s Findings from the Field Student Research Symposium welcomed 106 students, grades four through eight, 29 educators, and 15 Subject Matter Experts, and it featured 68 research posters, 14 lightning talks, and 5…</p>
+  </div>
+  
+  <div class="card" data-cat="Astronomy">
+    <div class="card-meta">
+      <span>NASA News</span>
+      <span>·</span>
+      <span>May 04</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.65">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://www.nasa.gov/missions/artemis/blue-origin-moon-lander-completes-testing-at-nasa-vacuum-chamber/" target="_blank" rel="noopener">Blue Origin Moon Lander Completes Testing at NASA Vacuum Chamber</a></h3>
+    <p>Also known as Endurance, MK1 is an uncrewed cargo lander funded by Blue Origin as a commercial demonstration mission to advance Human Landing System capabilities in support of NASA’s Artemis program. The tests in Chamber…</p>
+  </div>
+  
+  <div class="card" data-cat="Astronomy">
+    <div class="card-meta">
+      <span>NASA News</span>
+      <span>·</span>
+      <span>May 04</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.65">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://www.nasa.gov/image-article/hubble-spots-a-starry-spiral/" target="_blank" rel="noopener">Hubble Spots a Starry Spiral</a></h3>
+    <p>In this new picture from NASA&#8217;s&#160;Hubble Space Telescope, a spiral galaxy glittering with star clusters is the center of attention. NGC 3137 is located 53 million light-years away in the constellation&#160;Antli…</p>
+  </div>
+  
+  <div class="card" data-cat="Astronomy">
+    <div class="card-meta">
+      <span>NASA News</span>
+      <span>·</span>
+      <span>May 04</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.65">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://science.nasa.gov/missions/tess/for-nasas-tess-stellar-eclipses-shed-light-on-possible-new-worlds/" target="_blank" rel="noopener">For NASA’s TESS, Stellar Eclipses Shed Light on Possible New Worlds</a></h3>
+    <p>A study of NASA’s TESS (Transiting Exoplanet Survey Satellite) data on stellar pairs undergoing mutual eclipses has uncovered more than two dozen candidate exoplanets, or worlds beyond our solar system. This method allow…</p>
+  </div>
+  
+  <div class="card" data-cat="Astronomy">
+    <div class="card-meta">
+      <span>NASA News</span>
+      <span>·</span>
+      <span>May 04</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.65">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://www.nasa.gov/missions/lageos/lageos-an-earth-science-mission-built-for-enduring-precision/" target="_blank" rel="noopener">LAGEOS: An Earth Science Mission Built for Enduring Precision</a></h3>
+    <p>On May 4, 1976, a spacecraft resembling a disco ball entered orbit almost 3,700 miles (6,000 kilometers) above Earth. This shiny, two‑foot‑wide (60‑centimeter) sphere called the Laser Geodynamics Satellite, or LAGEOS, is…</p>
+  </div>
+  
+  <div class="card" data-cat="Astronomy">
+    <div class="card-meta">
+      <span>NASA News</span>
+      <span>·</span>
+      <span>May 04</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.65">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://science.nasa.gov/earth/earth-observatory/record-setting-retreat-of-hektoria-glacier/" target="_blank" rel="noopener">Record-Setting Retreat of Hektoria Glacier</a></h3>
+    <p>Scientists relied on satellite data to understand how the Antarctic glacier lost so much ice so rapidly.</p>
+  </div>
+  
+  <div class="card" data-cat="Mathematics">
+    <div class="card-meta">
+      <span>Numberphile</span>
+      <span>·</span>
+      <span>May 04</span>
+      <span class="tag">Mathematics</span>
+      <span class="tag" style="opacity:.65">trusted source (Mathematics)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/watch?v=SAtFZPtbMpI" target="_blank" rel="noopener">Entirely Ridiculously Big Numbers - Numberphile</a></h3>
+    <p>Rubik's Cube combinations quickly lead to some unimaginably large numbers. More links & stuff in full description below ↓↓↓
+
+Featuring Richard Elwes. More Richard on Numberphile: https://www.youtube.com/playlist?list=PLt…</p>
+  </div>
+  
+  <div class="card" data-cat="Technology">
+    <div class="card-meta">
+      <span>Cleo Abram</span>
+      <span>·</span>
+      <span>May 04</span>
+      <span class="tag">Technology</span>
+      <span class="tag" style="opacity:.65">trusted source (Technology)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/shorts/B9ocddyGfo8" target="_blank" rel="noopener">This Machine Grows Diamonds</a></h3>
+    <p>This crazy machine mimics the inside of the Earth to grow diamonds. 
+
+If you dig deep into the Earth’s mantle, you’ll enter hot, plastic-like rock filled with carbon atoms. These atoms are squeezed together over millions…</p>
+  </div>
+  
+  <div class="card" data-cat="Nature">
+    <div class="card-meta">
+      <span>Nat. History Museum</span>
+      <span>·</span>
+      <span>May 04</span>
+      <span class="tag">Nature</span>
+      <span class="tag" style="opacity:.65">trusted source (Nature)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/watch?v=ToGZ8ZkUaxY" target="_blank" rel="noopener">Our David Attenborough specimens: Nature, knowledge and a lasting legacy</a></h3>
+    <p>To celebrate 100 years of Sir David Attenborough’s extraordinary legacy, we take a look at two remarkable species named in his honour: Sylvicanthon attenboroughi, a dung beetle, and Attenborosaurus conybeari, a prehistor…</p>
+  </div>
+  
+  <div class="card" data-cat="Physics">
+    <div class="card-meta">
+      <span>Veritasium</span>
+      <span>·</span>
+      <span>May 03</span>
+      <span class="tag">Physics</span>
+      <span class="tag" style="opacity:.65">trusted source (Physics)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/watch?v=SVTPv4sI_Jc" target="_blank" rel="noopener">Can a quantum sensor detect your heartbeat from 60 km away?</a></h3>
+    <p>Is the CIA’s Ghost Murmur technology real? Sponsored by Ground News. Go to https://ground.news/Ve for 40% off the unlimited Vantage plan. 
+
+If you’re looking for a molecular modelling kit, try Snatoms, a kit I invented w…</p>
+  </div>
+  
+  <div class="card" data-cat="Nature">
+    <div class="card-meta">
+      <span>Nat. History Museum</span>
+      <span>·</span>
+      <span>May 03</span>
+      <span class="tag">Nature</span>
+      <span class="tag" style="opacity:.65">trusted source (Nature)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/shorts/lx3xgP-iwEs" target="_blank" rel="noopener">Finding this alive is like finding a plesiosaur in your bathtub #NHM #Mollusca #Extinct</a></h3>
+    <p>Join us for another episode of The 'Perfect' Specimen, this week Josh and Natalie are joined by curator Dr Katie Collins with three specimens all relating to the word 'Misunderstood'.  Katie brings some fossil bivalves, …</p>
+  </div>
+  
+  <div class="card" data-cat="Technology">
+    <div class="card-meta">
+      <span>Cleo Abram</span>
+      <span>·</span>
+      <span>May 02</span>
+      <span class="tag">Technology</span>
+      <span class="tag" style="opacity:.65">trusted source (Technology)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/shorts/5LJ1cxjQhyE" target="_blank" rel="noopener">Why Antarctica Has SO MANY Meteorites</a></h3>
+    <p>Why do we find SO MANY meteorites in Antarctica? 60% of meteorites found on Earth are found there! It’s not because it’s at the pole.
+
+The reason is these special blue ice areas. And how they form…
+
+For more adventures i…</p>
+  </div>
+  
+  <div class="card" data-cat="Experiments">
+    <div class="card-meta">
+      <span>The Action Lab</span>
+      <span>·</span>
+      <span>May 02</span>
+      <span class="tag">Experiments</span>
+      <span class="tag" style="opacity:.65">trusted source (Experiments)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/watch?v=1baBzd1XPkU" target="_blank" rel="noopener">Gravity Assists Are Basically Free Energy</a></h3>
+    <p>Checkout Freecash Here: https://bit.ly/TalYT</p>
+  </div>
+  
+  <div class="card" data-cat="Nature">
+    <div class="card-meta">
+      <span>Nat. History Museum</span>
+      <span>·</span>
+      <span>May 02</span>
+      <span class="tag">Nature</span>
+      <span class="tag" style="opacity:.65">trusted source (Nature)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/shorts/Y2E-6T225MU" target="_blank" rel="noopener">What is parthenogenesis? #NHM #Lizard #Reproduction</a></h3>
+    <p>Whiptail lizards are an all-female species, using a process called parthenogenesis to reproduce, which means they don’t need males.
+
+But how does it work? Museum scientist Miranda Sherlock explains.
+
+#NaturalHistoryMuseu…</p>
+  </div>
+  
+  <div class="card" data-cat="Biology">
+    <div class="card-meta">
+      <span>Quanta Magazine</span>
+      <span>·</span>
+      <span>May 01</span>
+      <span class="tag">Biology</span>
+      <span class="tag" style="opacity:.65">category: biology</span>
+    </div>
+    <h3><a href="https://www.quantamagazine.org/a-treasure-trove-of-cambrian-fossils-rewrites-the-story-of-early-life-20260501/" target="_blank" rel="noopener">A Treasure Trove of Cambrian Fossils Rewrites the Story of Early Life</a></h3>
+    <p>Remarkably preserved fossils found in southern China offer a fascinating window into what life looked like at the end of the Cambrian explosion, with half of the species uncovered being new to science.            The pos…</p>
+  </div>
+  
+  <div class="card" data-cat="Science">
+    <div class="card-meta">
+      <span>New Scientist</span>
+      <span>·</span>
+      <span>May 01</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.65">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2524665-an-unorthodox-version-of-quantum-theory-could-reveal-what-reality-is/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home" target="_blank" rel="noopener">An unorthodox version of quantum theory could reveal what reality is</a></h3>
+    <p>The implications of quantum mechanics suggest reality isn't as solid as we think it is, but physicist David Bohm had a spin on the theory that restores reality. Columnist Karmela Padavic-Callaghan explores how we could t…</p>
+  </div>
+  
+  <div class="card" data-cat="Science">
+    <div class="card-meta">
+      <span>New Scientist</span>
+      <span>·</span>
+      <span>May 01</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.65">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2525229-2026-will-be-the-hottest-year-on-record-leading-scientist-predicts/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home" target="_blank" rel="noopener">2026 will be the hottest year on record, leading scientist predicts</a></h3>
+    <p>The second half of this year will almost certainly see the start of an El Niño phase that could lead to extreme heat across much of the globe, and James Hansen expects that to make this year surpass 2024 as the hottest o…</p>
+  </div>
+  
+  <div class="card" data-cat="Science">
+    <div class="card-meta">
+      <span>New Scientist</span>
+      <span>·</span>
+      <span>May 01</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.65">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2524962-nhs-england-rushes-to-hide-software-over-ai-hacking-fears/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home" target="_blank" rel="noopener">NHS England rushes to hide software over AI hacking fears</a></h3>
+    <p>National Health Service rules state that all software created with public money should be publicly available, but fears of computer-hacking AI models like Mythos have prompted a change in policy</p>
+  </div>
+  
+  <div class="card" data-cat="Science">
+    <div class="card-meta">
+      <span>New Scientist</span>
+      <span>·</span>
+      <span>May 01</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.65">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2524931-why-i-explore-our-inevitable-love-for-robots-in-my-novel-luminous/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home" target="_blank" rel="noopener">Why I explore our inevitable love for robots in my novel Luminous</a></h3>
+    <p>Silvia Park, author of the May read for the New Scientist Book Club, reveals how a book that was originally intended to be for children took a darker route following a death in the family</p>
+  </div>
+  
+  <div class="card" data-cat="Science">
+    <div class="card-meta">
+      <span>New Scientist</span>
+      <span>·</span>
+      <span>May 01</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.65">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2524921-read-an-extract-from-luminous-by-silvia-park/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home" target="_blank" rel="noopener">Read an extract from Luminous by Silvia Park</a></h3>
+    <p>In this extract from Luminous, the May read for the New Scientist Book Club, we meet a mysterious robot discovered in a salvage yard in Seoul, in a future reunified Korea</p>
+  </div>
+  
+  <div class="card" data-cat="Science">
+    <div class="card-meta">
+      <span>New Scientist</span>
+      <span>·</span>
+      <span>May 01</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.65">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2525033-will-colombia-summit-kick-start-the-end-of-the-fossil-fuel-era/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home" target="_blank" rel="noopener">Will Colombia summit kick-start the end of the fossil fuel era?</a></h3>
+    <p>With progress at COP climate meetings stalling, 57 countries took part in the first of a new series of conferences aiming to develop roadmaps away from fossil fuels, but big emitters like China and the US were absent</p>
+  </div>
+  
+  <div class="card" data-cat="Astronomy">
+    <div class="card-meta">
+      <span>NASA News</span>
+      <span>·</span>
+      <span>May 01</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.65">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://www.nasa.gov/news-release/nasa-kennedy-center-director-announces-plans-to-retire/" target="_blank" rel="noopener">NASA Kennedy Center Director Announces Plans to Retire</a></h3>
+    <p>NASA announced Friday Janet Petro, center director for the agency’s Kennedy Space Center in Florida, is retiring. Prior to joining NASA, Petro worked in a variety of military and industry positions, ultimately beginning …</p>
+  </div>
+  
+  <div class="card" data-cat="Astronomy">
+    <div class="card-meta">
+      <span>NASA News</span>
+      <span>·</span>
+      <span>May 01</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.65">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://www.nasa.gov/image-article/nasa-artemis-ii-crew-rings-nasdaq-closing-bell/" target="_blank" rel="noopener">NASA Artemis II Crew Rings Nasdaq Closing Bell</a></h3>
+    <p>Nasdaq Chair and Chief Executive Officer Adena T. Friedman, left, and NASA’s Artemis II crewmembers CSA (Canadian Space Agency) astronaut Jeremy Hansen, and NASA astronauts Christina Koch, Victor Glover, and Reid Wiseman…</p>
+  </div>
+  
+  <div class="card" data-cat="Astronomy">
+    <div class="card-meta">
+      <span>NASA News</span>
+      <span>·</span>
+      <span>May 01</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.65">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://www.nasa.gov/image-article/key-support-equipment-arrives-at-kennedy-for-roman-space-telescope/" target="_blank" rel="noopener">Key Support Equipment Arrives at Kennedy for Roman Space Telescope</a></h3>
+    <p>Technicians at NASA’s Payload Hazardous Servicing Facility (PHSF) at the agency’s Kennedy Space Center in Florida offloaded eight high-efficiency particulate air (HEPA) wall modules and other ground support equipment on …</p>
+  </div>
+  
+  <div class="card" data-cat="Astronomy">
+    <div class="card-meta">
+      <span>NASA News</span>
+      <span>·</span>
+      <span>May 01</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.65">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://science.nasa.gov/science-research/heliophysics/nasas-storie-mission-to-tell-tale-of-earths-ring-current/" target="_blank" rel="noopener">NASA’s STORIE Mission to Tell Tale of Earth’s Ring Current</a></h3>
+    <p>Earth’s magnetic field is like a powerful trap. It lures electrically charged particles in space, near our planet, and snares them in an invisible, doughnut-shaped pen around Earth known as the ring current. This captive…</p>
+  </div>
+  
+  <div class="card" data-cat="Science">
+    <div class="card-meta">
+      <span>Kurzgesagt</span>
+      <span>·</span>
+      <span>Apr 30</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.65">trusted source (Science)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/shorts/RniYUmKs93U" target="_blank" rel="noopener">Pigeons Are GPS Drones</a></h3>
+    <p>Pigeons can pinpoint their location hundreds of kilometers from their roosts and navigate home autonomously, only using smell, the sun, and even Earth’s magnetic field. 
+
+#kurzgesagt
+#inanutshell #kurzgesagt_inanutshell …</p>
+  </div>
+  
+  <div class="card" data-cat="Technology">
+    <div class="card-meta">
+      <span>Cleo Abram</span>
+      <span>·</span>
+      <span>Apr 30</span>
+      <span class="tag">Technology</span>
+      <span class="tag" style="opacity:.65">trusted source (Technology)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/shorts/dqazxW8R5BY" target="_blank" rel="noopener">Our Brains Got Bigger. Now They’re Shrinking?</a></h3>
+    <p>This chart shows human brains size over time. They got way bigger, fast. But now they’re shrinking? (No, it’s not the phones!)
+
+About 2 million years ago something changed and it altered the course of human evolution. Ou…</p>
+  </div>
+  
+  <div class="card" data-cat="Experiments">
+    <div class="card-meta">
+      <span>Sick Science!</span>
+      <span>·</span>
+      <span>Apr 30</span>
+      <span class="tag">Experiments</span>
+      <span class="tag" style="opacity:.65">trusted source (Experiments)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/shorts/NLahOD9N6kY" target="_blank" rel="noopener">Creating Liquid Sandwiches With Just Three Ingredients...</a></h3>
+    <p>Steve uses water, salt, and food coloring to make incredible "liquid sandwiches" in a straw. 
+
+#sciencecommunicator #stevespangler #diyscience  #handsonscience #experiment 
+
+What’s Steve doing now? ► https://linktr.ee/st…</p>
+  </div>
+  
+  <div class="card" data-cat="Nature">
+    <div class="card-meta">
+      <span>Nat. History Museum</span>
+      <span>·</span>
+      <span>Apr 30</span>
+      <span class="tag">Nature</span>
+      <span class="tag" style="opacity:.65">trusted source (Nature)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/watch?v=9XEXBuWIs7I" target="_blank" rel="noopener">Golden eagles to alien microbes | Nature news you need to know</a></h3>
+    <p>The reintroduction of golden eagles to the UK, the devastating impact of warming oceans on Australian seabirds, what we’re doing to protect Earth from alien microbes and the discovery of an axolotl not where it should be…</p>
+  </div>
+  
+  <div class="card" data-cat="Mathematics">
+    <div class="card-meta">
+      <span>Quanta Magazine</span>
+      <span>·</span>
+      <span>Apr 29</span>
+      <span class="tag">Mathematics</span>
+      <span class="tag" style="opacity:.65">category: mathematics</span>
+    </div>
+    <h3><a href="https://www.quantamagazine.org/what-can-we-gain-by-losing-infinity-20260429/" target="_blank" rel="noopener">What Can We Gain by Losing Infinity?</a></h3>
+    <p>Ultrafinitism, a philosophy that rejects the infinite, has long been dismissed as mathematical heresy. But it is also producing new insights in math and beyond.            The post What Can We Gain by Losing Infinity? fi…</p>
+  </div>
+  
+  <div class="card" data-cat="Mathematics">
+    <div class="card-meta">
+      <span>Quanta Magazine</span>
+      <span>·</span>
+      <span>Apr 29</span>
+      <span class="tag">Mathematics</span>
+      <span class="tag" style="opacity:.65">category: mathematics</span>
+    </div>
+    <h3><a href="https://www.quantamagazine.org/why-maths-final-axiom-proved-so-controversial-20260429/" target="_blank" rel="noopener">Why Math’s Final Axiom Proved So Controversial</a></h3>
+    <p>Zermelo-Fraenkel set theory is so widely accepted that modern mathematicians hardly think about it. But believing in its core principles didn’t come easily.            The post Why Math’s Final Axiom Proved So Controvers…</p>
+  </div>
+  
+  <div class="card" data-cat="Science">
+    <div class="card-meta">
+      <span>New Scientist</span>
+      <span>·</span>
+      <span>Apr 29</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.65">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2522448-why-dinosaurs-lived-much-more-complex-lives-than-we-thought/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home" target="_blank" rel="noopener">Why dinosaurs lived much more complex lives than we thought</a></h3>
+    <p>A wave of dinosaur discoveries over the past decade has completely reshaped our understanding of these long-extinct animals. Palaeontologist Dave Hone spills the secrets of how dinosaurs lived, from how social they were …</p>
+  </div>
+  
+  <div class="card" data-cat="Science">
+    <div class="card-meta">
+      <span>New Scientist</span>
+      <span>·</span>
+      <span>Apr 29</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.65">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2524419-our-verdict-on-red-mars-mostly-great-with-a-few-quibbles/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home" target="_blank" rel="noopener">Our verdict on Red Mars: Mostly great, with a few quibbles</a></h3>
+    <p>The New Scientist Book Club read Kim Stanley Robinson's acclaimed science fiction story about the first settlers on Mars in April – and had a lot to say about it</p>
+  </div>
+  
+  <div class="card" data-cat="Science">
+    <div class="card-meta">
+      <span>New Scientist</span>
+      <span>·</span>
+      <span>Apr 29</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.65">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/mg27035932-100-is-an-ai-version-of-mark-zuckerberg-or-any-boss-a-good-plan/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home" target="_blank" rel="noopener">Is an AI version of Mark Zuckerberg – or any boss – a good plan?</a></h3>
+    <p>Feedback has learned that, according to reports, Meta is building an AI version of Mark Zuckerberg to interact with staff. Feedback hopes this doesn't become a trend</p>
+  </div>
+  
+  <div class="card" data-cat="Science">
+    <div class="card-meta">
+      <span>New Scientist</span>
+      <span>·</span>
+      <span>Apr 29</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.65">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2524690-weird-transdimensional-state-of-matter-is-neither-2d-nor-3d/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home" target="_blank" rel="noopener">Weird 'transdimensional' state of matter is neither 2D nor 3D</a></h3>
+    <p>An experiment with a carbon material in a magnetic field has revealed a novel way for electrons to move, which doesn't fully belong in two or three spatial dimensions</p>
+  </div>
+  
+  <div class="card" data-cat="Physics">
+    <div class="card-meta">
+      <span>Veritasium</span>
+      <span>·</span>
+      <span>Apr 29</span>
+      <span class="tag">Physics</span>
+      <span class="tag" style="opacity:.65">trusted source (Physics)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/watch?v=ksn5yrsC3Wg" target="_blank" rel="noopener">The Disaster I Never Imagined Having To Worry About</a></h3>
+    <p>The crystals that wiped out an HIV medication, almost overnight. Thanks to SoFi for sponsoring the video! Click here to sign-up for SoFi Checking and Savings: https://sofi.com/ve 
+
+If you’re looking for a molecular model…</p>
+  </div>
+  
+  <div class="card" data-cat="Technology">
+    <div class="card-meta">
+      <span>Cleo Abram</span>
+      <span>·</span>
+      <span>Apr 29</span>
+      <span class="tag">Technology</span>
+      <span class="tag" style="opacity:.65">trusted source (Technology)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/shorts/pG99B0ui06s" target="_blank" rel="noopener">How They Build Underwater Tunnels</a></h3>
+    <p>How do they build underwater tunnels? How do they not fill up with water!?
+
+Here’s how the British and French built the Channel Tunnel, one of the longest undersea tunnels… 
+
+For more stories like this, subscribe.
+
+#shor…</p>
+  </div>
+  
+  <div class="card" data-cat="Science">
+    <div class="card-meta">
+      <span>New Scientist</span>
+      <span>·</span>
+      <span>Apr 28</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.65">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2523209-is-consciousness-more-fundamental-to-reality-than-quantum-physics/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home" target="_blank" rel="noopener">Is consciousness more fundamental to reality than quantum physics?</a></h3>
+    <p>The idea that everything that exists can be built from the bottom up has long held sway among physicists. Now, a new kind of science is under construction that centres conscious experience – and might unravel the univers…</p>
+  </div>
+  
+  <div class="card" data-cat="Nature">
+    <div class="card-meta">
+      <span>Nat. History Museum</span>
+      <span>·</span>
+      <span>Apr 28</span>
+      <span class="tag">Nature</span>
+      <span class="tag" style="opacity:.65">trusted source (Nature)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/shorts/pJfjRiIU35s" target="_blank" rel="noopener">Why are they called praying mantises? 🙏 #NHM #Insects #Nature</a></h3>
+    <p>If you take a closer look at their legs you can understand why Carl Linnaeus chose the name, Mantis religiosa.
+
+#NaturalHistoryMuseum #Mantis #Collection
+----------------
+Subscribe to our channel for the latest natural h…</p>
+  </div>
+  
+  <div class="card" data-cat="Mathematics">
+    <div class="card-meta">
+      <span>Stand-up Maths</span>
+      <span>·</span>
+      <span>Apr 27</span>
+      <span class="tag">Mathematics</span>
+      <span class="tag" style="opacity:.65">trusted source (Mathematics)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/watch?v=kH_bSvf7EVA" target="_blank" rel="noopener">What is up with UK bridge height signs?</a></h3>
+    <p>Support the show filming, pre-order the download and get silly perks: https://www.kickstarter.com/projects/standupmaths/getting-triggy-with-it/
+
+Or you can just come and see me on tour in October: http://standupmaths.com…</p>
+  </div>
+  
+  <div class="card" data-cat="Experiments">
+    <div class="card-meta">
+      <span>Sick Science!</span>
+      <span>·</span>
+      <span>Apr 27</span>
+      <span class="tag">Experiments</span>
+      <span class="tag" style="opacity:.65">trusted source (Experiments)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/watch?v=XZ6j5-nBFyc" target="_blank" rel="noopener">Make Exploding Film Canisters??</a></h3>
+    <p>Steve shows off a simple trick to create film canisters that explode with just two ingredients...
+
+What’s Steve doing now? ► https://linktr.ee/stevespangler
+For business inquiries, contact +1-855-228-8780 or steve@steves…</p>
+  </div>
+  
+  <div class="card" data-cat="Experiments">
+    <div class="card-meta">
+      <span>Sick Science!</span>
+      <span>·</span>
+      <span>Apr 27</span>
+      <span class="tag">Experiments</span>
+      <span class="tag" style="opacity:.65">trusted source (Experiments)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/shorts/IXha1QTP6vM" target="_blank" rel="noopener">Hex Nuts Tied to a Bowling Ball... Save The Wine Glasses? Why?</a></h3>
+    <p>Steve shows off a trick where hex nuts that are 1/14th the weight of a bowling ball stop it from demolishing wine glasses.
+
+#learnonyoutube #stevespangler #handsonscience 
+
+What’s Steve doing now? ► https://linktr.ee/ste…</p>
+  </div>
+  
+
+</div>
+
+<footer>Generated by GitHub Actions every Saturday · Sources: YouTube RSS &amp; public feeds · No scraping</footer>
+
+<script>
+  const btns  = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.card');
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.dataset.cat;
+      cards.forEach(c => {
+        c.style.display = (cat === 'all' || c.dataset.cat === cat) ? '' : 'none';
+      });
+    });
+  });
+</script>
 </body>
 </html>

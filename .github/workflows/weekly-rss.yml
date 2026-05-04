@@ -1,0 +1,33 @@
+name: Weekly Science Page
+
+on:
+  schedule:
+    - cron: '0 9 * * 6'   # Saturday 09:00 UTC = 05:00 ET
+  workflow_dispatch:        # manual trigger from Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - run: pip install -r requirements.txt
+
+      - name: Build digest page
+        run: python scripts/build_page.py
+
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add index.html rejected.html debug.json
+          git commit -m "Weekly digest $(date -u +%Y-%m-%d)" || exit 0
+          git push

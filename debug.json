@@ -13,17 +13,6 @@
     },
     {
       "source": "New Scientist",
-      "title": "300-year-old experiment could become world's best dark matter detector",
-      "link": "https://www.newscientist.com/article/2524958-300-year-old-experiment-could-become-worlds-best-dark-matter-detector/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
-      "category": "Science",
-      "date": "2026-05-04",
-      "date_str": "May 04",
-      "summary": "An update to an experiment run by Henry Cavendish in 1773 could be a cheaper and faster way to spot a potential dark matter particle \u2013 and may be 10,000 times more sensitive",
-      "feed_cats": "",
-      "reason": "keyword match"
-    },
-    {
-      "source": "New Scientist",
       "title": "The greatest David Attenborough documentaries you really need to watch",
       "link": "https://www.newscientist.com/article/2525104-the-greatest-david-attenborough-documentaries-you-really-need-to-watch/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
       "category": "Science",
@@ -415,6 +404,17 @@
       "date": "2026-04-29",
       "date_str": "Apr 29",
       "summary": "An experiment with a carbon material in a magnetic field has revealed a novel way for electrons to move, which doesn't fully belong in two or three spatial dimensions",
+      "feed_cats": "",
+      "reason": "keyword match"
+    },
+    {
+      "source": "New Scientist",
+      "title": "Scorpions reinforce their claws and stingers with metals",
+      "link": "https://www.newscientist.com/article/2524699-scorpions-reinforce-their-claws-and-stingers-with-metals/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
+      "category": "Science",
+      "date": "2026-04-29",
+      "date_str": "Apr 29",
+      "summary": "Many scorpion species use blends of iron, zinc and manganese to enhance the toughness of their deadly weaponry",
       "feed_cats": "",
       "reason": "keyword match"
     },

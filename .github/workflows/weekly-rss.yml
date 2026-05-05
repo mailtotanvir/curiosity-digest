@@ -19,11 +19,11 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
-      - run: pip install -r requirements.txt
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
 
       - name: Build digest page
         env:
-          # Only the repo name — NO PAT in build, NO PAT in HTML
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: python scripts/build_page.py
 

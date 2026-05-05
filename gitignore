@@ -1,41 +1,26 @@
-# ── Python ───────────────────────────────────────────────────────────────────
+# Python
 __pycache__/
 *.py[cod]
-*.pyo
-.Python
-*.egg-info/
-dist/
-build/
-.eggs/
-
-# ── Virtual environments ──────────────────────────────────────────────────────
 .venv/
 venv/
-env/
 .env
-
-# ── Local secrets — NEVER commit these ───────────────────────────────────────
-# If you ever test locally, put your PAT here, not in any tracked file.
 .env.local
-secrets.txt
-*.secret
 
-# ── Generated output files ────────────────────────────────────────────────────
-# These are rebuilt every week by the Action. No need to track history.
-# Remove index.html and rejected.html from this list if you want git history.
-debug.json
+# Vercel
+.vercel/
 
-# ── macOS / editor noise ──────────────────────────────────────────────────────
+# macOS / editor
 .DS_Store
-.DS_Store?
-._*
-Thumbs.db
 *.swp
-*.swo
 .idea/
 .vscode/
 
-# ── NOTE: likes.json and index.html ARE tracked intentionally ────────────────
-# likes.json  → your permanent like history, committed by the Action
-# index.html  → the generated digest page, served by GitHub Pages
-# Do NOT add them here.
+# Local dev secrets — NEVER commit
+secrets.txt
+*.secret
+
+# Generated weekly — tracked intentionally, listed here for clarity
+# index.html    ← DO NOT ignore, GitHub Pages needs it
+# likes.json    ← DO NOT ignore, your permanent like history
+# debug.json is safe to ignore if you prefer
+debug.json

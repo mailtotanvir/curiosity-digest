@@ -21,21 +21,9 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      # Pull the current likes.json from the repo so it's present
-      # when build_page.py checks for it. If it doesn't exist yet,
-      # the script will create an empty one.
-      - name: Restore likes.json
-        run: |
-          git fetch origin main
-          git checkout origin/main -- likes.json 2>/dev/null || true
-
       - name: Build digest page
         env:
-          # GH_PAT: fine-grained PAT you created in GitHub Settings.
-          # Add it as a repo secret named GH_PAT.
-          # Scope: Contents read+write on THIS repo only. Nothing else.
-          GH_PAT: ${{ secrets.GH_PAT }}
-          # GITHUB_REPOSITORY is provided automatically by Actions (e.g. "you/brain-food")
+          # Only the repo name — NO PAT in build, NO PAT in HTML
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: python scripts/build_page.py
 
@@ -43,6 +31,7 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add index.html rejected.html debug.json likes.json
+          git add index.html rejected.html debug.json
+          git add likes.json 2>/dev/null || true
           git commit -m "Weekly digest $(date -u +%Y-%m-%d)" || exit 0
           git push

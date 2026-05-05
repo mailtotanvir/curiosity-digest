@@ -3,8 +3,8 @@ Curiosity Digest Builder
 Fetches public RSS/Atom feeds only — no scraping, no cookies, no Meta.
 YouTube RSS feeds are official and never blocked.
 
-Likes are stored in the browser's localStorage — no backend needed.
-They persist across weekly rebuilds because posts are keyed by URL hash.
+Likes are stored in likes.json in the repo via GitHub API.
+They sync across all browsers and devices automatically.
 """
 
 import feedparser
@@ -19,13 +19,10 @@ from pathlib import Path
 YT = "https://www.youtube.com/feeds/videos.xml?channel_id="
 
 FEEDS = {
-    # ── Written / article sources ──────────────────────────────────────────
     "Quanta Magazine":     "https://www.quantamagazine.org/feed/",
     "New Scientist":       "https://www.newscientist.com/feed/home/",
     "Dror Bar-Natan":      "https://drorbn.net/feed",
     "NASA News":           "https://www.nasa.gov/feed/",
-
-    # ── YouTube: Math & Physics ────────────────────────────────────────────
     "3Blue1Brown":         YT + "UCYO_jab_esuFRV4b17AJtAw",
     "Veritasium":          YT + "UCHnyfMqiRRG1u-2MsSQLbXA",
     "MinutePhysics":       YT + "UCUHW94eEFW7hkUMVaZz4eDg",
@@ -33,20 +30,14 @@ FEEDS = {
     "Stand-up Maths":      YT + "UCSju5G2aFaWMqn-_0YBtq5A",
     "Kurzgesagt":          YT + "UCsXVk37bltHxD1rDPwtNM8Q",
     "Fermilab":            YT + "UCr_M7kA6GBmn8jAYgGZ55fg",
-
-    # ── YouTube: Technology & Explainers ──────────────────────────────────
     "Cleo Abram":          YT + "UC415bOPUcGSamy543abLmRA",
-
-    # ── YouTube: Experiments & Nature ─────────────────────────────────────
     "The Action Lab":      YT + "UC1VLQPn9cYSqx8plbk9RxxQ",
     "Sick Science!":       YT + "UCDom90xOqP4avehFjSJO6NA",
     "Nat. History Museum": YT + "UC7zosc8-0T6Dfyo1bg0w7KA",
 }
 
-# ── Time window ───────────────────────────────────────────────────────────────
 SINCE = datetime.now(timezone.utc) - timedelta(days=7)
 
-# ── Category allowlist ────────────────────────────────────────────────────────
 GOOD_CATS = {
     "mathematics","math","physics","quantum physics","quantum mechanics",
     "astronomy","astrophysics","space","cosmology","relativity",
@@ -56,7 +47,6 @@ GOOD_CATS = {
     "natural history","nature","ecology","stem","education",
 }
 
-# ── Keyword regex ─────────────────────────────────────────────────────────────
 KEEP_RE = re.compile(
     r'\b(physic|quantum|relativ|astronom|cosmo|galax|nebula|neutrino|'
     r'black\s*hole|dark\s*matter|dark\s*energy|higgs|particle|'
@@ -77,7 +67,6 @@ BLOCK_RE = re.compile(
     re.I
 )
 
-# ── Source → category (YouTube has no category tags) ─────────────────────────
 SOURCE_CATEGORY = {
     "3Blue1Brown":         "Mathematics",
     "Numberphile":         "Mathematics",
@@ -114,7 +103,6 @@ def parse_date(entry):
     return None
 
 def make_id(link):
-    """Stable 12-char ID from URL so likes survive weekly rebuilds."""
     import hashlib
     return hashlib.md5(link.encode()).hexdigest()[:12]
 
@@ -125,10 +113,8 @@ kept, rejected = [], []
 for source_name, url in FEEDS.items():
     print(f"  Fetching {source_name}…", flush=True)
     feed = feedparser.parse(url)
-
     if feed.bozo and not feed.entries:
         print(f"    ⚠  parse error, skipping"); continue
-
     print(f"    → {len(feed.entries)} entries")
 
     for entry in feed.entries[:30]:
@@ -157,16 +143,16 @@ for source_name, url in FEEDS.items():
             keep, reason, cat = False, "no match", "—"
 
         item = {
-            "id":       make_id(link),
-            "source":   source_name,
-            "title":    title,
-            "link":     link,
-            "category": cat,
-            "date":     pub.strftime("%Y-%m-%d"),
-            "date_str": pub.strftime("%b %d"),
-            "summary":  summary[:220] + ("…" if len(summary) > 220 else ""),
+            "id":        make_id(link),
+            "source":    source_name,
+            "title":     title,
+            "link":      link,
+            "category":  cat,
+            "date":      pub.strftime("%Y-%m-%d"),
+            "date_str":  pub.strftime("%b %d"),
+            "summary":   summary[:220] + ("…" if len(summary) > 220 else ""),
             "feed_cats": ", ".join(cats),
-            "reason":   reason,
+            "reason":    reason,
         }
         (kept if keep else rejected).append(item)
 
@@ -175,6 +161,14 @@ rejected = sorted(rejected, key=lambda x: x["date"], reverse=True)
 print(f"\n✓ {len(kept)} kept  |  {len(rejected)} filtered")
 
 # ── HTML template ─────────────────────────────────────────────────────────────
+# The JS in the page:
+#   1. On load  — fetches likes.json from the repo via GitHub raw URL (public, no auth)
+#   2. On like  — calls GitHub Contents API to read+update likes.json (needs GH_PAT)
+#   3. GH_PAT is injected into the page at build time from the GITHUB_TOKEN env var.
+#      It has ONLY contents:write on this one repo. It is NOT the Actions secret itself —
+#      the Actions workflow writes it into the HTML during build so the page can call
+#      the GitHub API from the browser. Scope it to the minimum (fine-grained PAT,
+#      contents read+write on this repo only).
 
 INDEX_HTML = r"""<!doctype html>
 <html lang="en">
@@ -199,28 +193,24 @@ INDEX_HTML = r"""<!doctype html>
     body { font-family:system-ui,-apple-system,sans-serif; background:var(--bg);
            color:var(--heading); max-width:820px; margin:0 auto;
            padding:2rem 1.25rem 4rem; line-height:1.6 }
-
-    /* Header */
     header { margin-bottom:1.75rem }
     h1 { font-size:1.75rem; font-weight:800; margin-bottom:.3rem }
     .meta { color:var(--muted); font-size:.875rem }
     .meta a { color:var(--accent); text-decoration:none }
     .meta a:hover { text-decoration:underline }
 
-    /* Tabs */
     .tabs { display:flex; flex-wrap:wrap; gap:.4rem; margin:1.25rem 0 1.5rem }
     .tab-btn { background:var(--surface); border:1px solid var(--border);
                color:var(--muted); border-radius:999px; padding:.3rem .85rem;
                font-size:.8rem; cursor:pointer; transition:all .15s;
                display:flex; align-items:center; gap:.35rem }
-    .tab-btn:hover, .tab-btn.active { border-color:var(--accent);
+    .tab-btn:hover,.tab-btn.active { border-color:var(--accent);
                color:var(--accent); background:var(--tag-bg) }
     .badge { background:var(--like-on); color:#fff; border-radius:999px;
              padding:0 6px; font-size:.7rem; font-weight:700;
              display:none; line-height:1.6 }
     .badge.visible { display:inline }
 
-    /* Cards */
     .card { position:relative; background:var(--surface);
             border:1px solid var(--border); border-radius:10px;
             padding:1.1rem 1.25rem 1.1rem 3rem;
@@ -237,24 +227,23 @@ INDEX_HTML = r"""<!doctype html>
     .card h3 a:hover { color:var(--accent) }
     .card p { font-size:.875rem; color:var(--muted) }
 
-    /* Like button */
     .like-btn { position:absolute; left:.9rem; top:1.05rem;
                 background:none; border:none; cursor:pointer;
                 font-size:1.3rem; line-height:1; padding:2px;
-                color:var(--like-off); transition:color .15s, transform .15s }
+                color:var(--like-off); transition:color .15s,transform .15s }
     .like-btn:hover { transform:scale(1.25) }
     .like-btn.liked { color:var(--like-on) }
+    .like-btn.saving { opacity:.5; pointer-events:none }
     .like-btn.pop { animation:pop .25s ease }
     @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.5)} 100%{transform:scale(1)} }
 
-    /* Views */
     #liked-view { display:none }
     #liked-view.active { display:block }
     #feed-view.hidden { display:none }
-
     .liked-header { font-size:.875rem; color:var(--muted); margin-bottom:1.25rem }
-    .liked-empty { text-align:center; color:var(--muted); padding:3rem 0; font-size:.95rem }
+    .liked-empty { text-align:center; color:var(--muted); padding:3rem 0 }
     .unlike-hint { font-size:.72rem; color:var(--muted); margin-top:.25rem; opacity:.7 }
+    .sync-status { font-size:.75rem; color:var(--muted); margin-left:.5rem; opacity:.8 }
 
     .empty { text-align:center; color:var(--muted); padding:3rem 0 }
     footer { margin-top:3rem; padding-top:1rem; border-top:1px solid var(--border);
@@ -269,6 +258,7 @@ INDEX_HTML = r"""<!doctype html>
     Updated {{ now }} &nbsp;·&nbsp;
     {{ kept|length }} posts &nbsp;·&nbsp;
     <a href="rejected.html">{{ rej|length }} filtered →</a>
+    <span class="sync-status" id="sync-status"></span>
   </p>
 </header>
 
@@ -282,7 +272,6 @@ INDEX_HTML = r"""<!doctype html>
   </button>
 </div>
 
-<!-- Feed -->
 <div id="feed-view">
 {% if kept %}
   {% for it in kept %}
@@ -306,41 +295,105 @@ INDEX_HTML = r"""<!doctype html>
   </div>
   {% endfor %}
 {% else %}
-  <div class="empty">No posts found this week. Check <a href="rejected.html">rejected.html</a>.</div>
+  <div class="empty">No posts found this week.</div>
 {% endif %}
 </div>
 
-<!-- Liked panel -->
 <div id="liked-view">
-  <p class="liked-header">Posts you've saved — persists across weekly updates.</p>
+  <p class="liked-header">
+    Posts saved across all weekly digests — synced to your repo.
+    <a href="likes.json" target="_blank" style="color:var(--accent);text-decoration:none;font-size:.8rem">
+      Download likes.json →
+    </a>
+  </p>
   <div id="liked-cards"></div>
 </div>
 
-<footer>Curiosity Digest · GitHub Actions · YouTube RSS &amp; public feeds · No tracking · Likes live in your browser</footer>
+<footer>Curiosity Digest · GitHub Actions · YouTube RSS &amp; public feeds · Likes saved to repo</footer>
 
 <script>
-  const KEY = 'curiosity_likes';
+  // ── Config (injected at build time by GitHub Actions) ────────────────────
+  // GH_PAT: fine-grained PAT, contents read+write on THIS REPO ONLY.
+  // It is embedded in the built HTML. Use a minimal-scope token.
+  const GH_PAT  = "{{ gh_pat }}";
+  const GH_REPO = "{{ gh_repo }}";   // e.g. "ailtotanvir/brain-food"
+  const LIKES_PATH = "likes.json";
 
-  function getLikes() {
-    try { return JSON.parse(localStorage.getItem(KEY) || '{}'); }
-    catch { return {}; }
+  // ── GitHub API helpers ───────────────────────────────────────────────────
+  const RAW_URL   = `https://raw.githubusercontent.com/${GH_REPO}/main/${LIKES_PATH}`;
+  const API_URL   = `https://api.github.com/repos/${GH_REPO}/contents/${LIKES_PATH}`;
+  const API_HEADS = {
+    "Authorization": `token ${GH_PAT}`,
+    "Accept":        "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28",
+  };
+
+  let currentSha = null;   // needed for update calls
+
+  function setStatus(msg) {
+    document.getElementById('sync-status').textContent = msg;
   }
-  function saveLikes(obj) { localStorage.setItem(KEY, JSON.stringify(obj)); }
+
+  async function loadLikes() {
+    // Read from raw CDN — fast, no auth needed
+    try {
+      const r = await fetch(RAW_URL + "?cb=" + Date.now());
+      if (r.status === 404) return {};
+      if (!r.ok) throw new Error(r.status);
+      return await r.json();
+    } catch (e) {
+      console.warn("Could not load likes.json:", e);
+      return {};
+    }
+  }
+
+  async function saveLikes(likes) {
+    // Must use API (not raw) to get SHA and write back
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(likes, null, 2))));
+
+    // Fetch current SHA if we don't have it
+    if (!currentSha) {
+      try {
+        const r = await fetch(API_URL, { headers: API_HEADS });
+        if (r.ok) { const d = await r.json(); currentSha = d.sha; }
+      } catch(e) {}
+    }
+
+    const body = {
+      message: `likes: update ${new Date().toISOString().slice(0,10)}`,
+      content,
+      ...(currentSha ? { sha: currentSha } : {}),
+    };
+
+    const r = await fetch(API_URL, {
+      method: "PUT",
+      headers: { ...API_HEADS, "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    if (!r.ok) throw new Error(`GitHub API ${r.status}: ${await r.text()}`);
+    const d = await r.json();
+    currentSha = d.content.sha;
+  }
+
+  // ── State ────────────────────────────────────────────────────────────────
+  let likes = {};
 
   const badge = document.getElementById('like-badge');
   function refreshBadge() {
-    const n = Object.keys(getLikes()).length;
+    const n = Object.keys(likes).length;
     badge.textContent = n;
     badge.classList.toggle('visible', n > 0);
   }
 
+  // ── Liked panel renderer ─────────────────────────────────────────────────
   function renderLiked() {
-    const entries = Object.values(getLikes())
-                          .sort((a,b) => (b.likedAt||0) - (a.likedAt||0));
+    const entries = Object.values(likes)
+                          .sort((a,b) => (b.likedAt||0)-(a.likedAt||0));
     const box = document.getElementById('liked-cards');
 
     if (!entries.length) {
-      box.innerHTML = '<div class="liked-empty">No liked posts yet.<br>Hit ♥ on any card to save it here.</div>';
+      box.innerHTML = '<div class="liked-empty">No liked posts yet. Hit ♥ on any card.</div>';
       return;
     }
 
@@ -358,29 +411,34 @@ INDEX_HTML = r"""<!doctype html>
       </div>`).join('');
 
     box.querySelectorAll('.like-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const id    = btn.dataset.id;
-        const likes = getLikes();
+      btn.addEventListener('click', async () => {
+        const id = btn.dataset.id;
         delete likes[id];
-        saveLikes(likes);
+        btn.classList.add('saving');
+        setStatus('saving…');
+        try {
+          await saveLikes(likes);
+          setStatus('saved ✓');
+        } catch(e) {
+          setStatus('save failed — check console');
+          console.error(e);
+        }
         refreshBadge();
         renderLiked();
-        // sync the feed card heart if visible
         const feedBtn = document.querySelector(`#feed-view [data-id="${id}"] .like-btn`);
         if (feedBtn) feedBtn.classList.remove('liked');
+        setTimeout(() => setStatus(''), 2000);
       });
     });
   }
 
-  // Wire feed card hearts
+  // ── Wire feed card hearts ────────────────────────────────────────────────
   document.querySelectorAll('#feed-view .card').forEach(card => {
     const id  = card.dataset.id;
     const btn = card.querySelector('.like-btn');
     if (!btn) return;
-    if (getLikes()[id]) btn.classList.add('liked');
 
-    btn.addEventListener('click', () => {
-      const likes   = getLikes();
+    btn.addEventListener('click', async () => {
       const wasLiked = !!likes[id];
       if (wasLiked) {
         delete likes[id];
@@ -396,17 +454,32 @@ INDEX_HTML = r"""<!doctype html>
           likedAt: Date.now(),
         };
       }
-      saveLikes(likes);
+
       btn.classList.toggle('liked', !wasLiked);
-      btn.classList.add('pop');
+      btn.classList.add('pop', 'saving');
       btn.addEventListener('animationend', () => btn.classList.remove('pop'), {once:true});
       refreshBadge();
+      setStatus('saving…');
+
+      try {
+        await saveLikes(likes);
+        setStatus('saved ✓');
+      } catch(e) {
+        // Roll back on failure
+        if (wasLiked) likes[id] = {};
+        else delete likes[id];
+        btn.classList.toggle('liked', wasLiked);
+        refreshBadge();
+        setStatus('save failed — check console');
+        console.error(e);
+      } finally {
+        btn.classList.remove('saving');
+        setTimeout(() => setStatus(''), 2000);
+      }
     });
   });
 
-  refreshBadge();
-
-  // Tab switching
+  // ── Tab switching ────────────────────────────────────────────────────────
   const feedView  = document.getElementById('feed-view');
   const likedView = document.getElementById('liked-view');
   const likedTab  = document.getElementById('liked-tab');
@@ -434,6 +507,20 @@ INDEX_HTML = r"""<!doctype html>
     likedView.classList.add('active');
     renderLiked();
   });
+
+  // ── Boot: load likes from repo ───────────────────────────────────────────
+  (async () => {
+    setStatus('loading likes…');
+    likes = await loadLikes();
+    // Apply liked state to feed cards
+    document.querySelectorAll('#feed-view .card').forEach(card => {
+      if (likes[card.dataset.id]) {
+        card.querySelector('.like-btn')?.classList.add('liked');
+      }
+    });
+    refreshBadge();
+    setStatus('');
+  })();
 </script>
 </body>
 </html>"""
@@ -472,14 +559,26 @@ REJECTED_HTML = """<!doctype html>
 </body>
 </html>"""
 
-# ── Write output ──────────────────────────────────────────────────────────────
+# ── Render & write ────────────────────────────────────────────────────────────
+
+import os
 
 categories = sorted(set(it["category"] for it in kept if it["category"] != "—"))
 now        = datetime.now(timezone.utc).strftime("%B %d, %Y at %H:%M UTC")
 
+# GH_PAT and GITHUB_REPOSITORY are injected by the Actions workflow.
+# Locally they'll be empty strings — likes won't save, but the page still works.
+gh_pat  = os.environ.get("GH_PAT", "")
+gh_repo = os.environ.get("GITHUB_REPOSITORY", "")
+
 env = Environment(autoescape=True)
 Path("index.html").write_text(
-    env.from_string(INDEX_HTML).render(kept=kept, rej=rejected, now=now, categories=categories),
+    env.from_string(INDEX_HTML).render(
+        kept=kept, rej=rejected, now=now,
+        categories=categories,
+        gh_pat=gh_pat,
+        gh_repo=gh_repo,
+    ),
     encoding="utf-8"
 )
 Path("rejected.html").write_text(
@@ -491,4 +590,9 @@ Path("debug.json").write_text(
     encoding="utf-8"
 )
 
-print("✅  Written → index.html  rejected.html  debug.json")
+# Create likes.json if it doesn't exist yet (first run)
+if not Path("likes.json").exists():
+    Path("likes.json").write_text("{}", encoding="utf-8")
+    print("  Created empty likes.json")
+
+print("✅  Written → index.html  rejected.html  debug.json  likes.json")

@@ -1,3 +1,7 @@
 {
-"outputDirectory":"."
+  "framework": null,
+  "outputDirectory": ".",
+  "ignoreCommand": "exit 0",
+  "installCommand": "echo 'no install'",
+  "buildCommand": "echo 'no build'"
 }

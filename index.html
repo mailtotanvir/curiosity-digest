@@ -1,30 +1,1215 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Curiosity Digest</title>
   <style>
-    body {
-      font-family: system-ui, sans-serif;
-      background: #0f172a; color: #94a3b8;
-      display: flex; align-items: center; justify-content: center;
-      min-height: 100vh; margin: 0; text-align: center; padding: 2rem;
+    :root {
+      --bg:#f8f9fa; --surface:#fff; --border:#e5e7eb;
+      --accent:#0a58ca; --muted:#6b7280;
+      --tag-bg:#eff6ff; --tag-color:#1d4ed8; --heading:#111827;
+      --like-off:#d1d5db; --like-on:#ef4444;
     }
-    h1 { color: #f1f5f9; font-size: 1.75rem; margin-bottom: .5rem; }
-    p  { line-height: 1.7; max-width: 420px; }
-    code { background: #1e293b; padding: 2px 8px;
-           border-radius: 4px; color: #60a5fa; font-size: .9em; }
+    @media (prefers-color-scheme:dark) { :root {
+      --bg:#0f172a; --surface:#1e293b; --border:#334155;
+      --accent:#60a5fa; --muted:#94a3b8;
+      --tag-bg:#1e3a5f; --tag-color:#93c5fd; --heading:#f1f5f9;
+      --like-off:#475569; --like-on:#f87171;
+    }}
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
+    body { font-family:system-ui,-apple-system,sans-serif; background:var(--bg);
+           color:var(--heading); max-width:820px; margin:0 auto;
+           padding:2rem 1.25rem 4rem; line-height:1.6 }
+    header { margin-bottom:1.75rem }
+    h1 { font-size:1.75rem; font-weight:800; margin-bottom:.3rem }
+    .meta { color:var(--muted); font-size:.875rem }
+    .meta a { color:var(--accent); text-decoration:none }
+    .meta a:hover { text-decoration:underline }
+    .status { font-size:.75rem; color:var(--muted); margin-left:.5rem }
+    .status.err { color:#ef4444 }
+
+    .tabs { display:flex; flex-wrap:wrap; gap:.4rem; margin:1.25rem 0 1.5rem }
+    .tab-btn { background:var(--surface); border:1px solid var(--border);
+               color:var(--muted); border-radius:999px; padding:.3rem .85rem;
+               font-size:.8rem; cursor:pointer; transition:all .15s;
+               display:flex; align-items:center; gap:.35rem }
+    .tab-btn:hover,.tab-btn.active { border-color:var(--accent);
+               color:var(--accent); background:var(--tag-bg) }
+    .badge { background:var(--like-on); color:#fff; border-radius:999px;
+             padding:0 6px; font-size:.7rem; font-weight:700;
+             display:none; line-height:1.6 }
+    .badge.visible { display:inline }
+
+    .card { position:relative; background:var(--surface);
+            border:1px solid var(--border); border-radius:10px;
+            padding:1.1rem 1.25rem 1.1rem 3rem;
+            margin-bottom:.85rem; transition:border-color .15s }
+    .card:hover { border-color:var(--accent) }
+    .card-meta { display:flex; align-items:center; gap:.5rem;
+                 font-size:.78rem; color:var(--muted);
+                 margin-bottom:.4rem; flex-wrap:wrap }
+    .tag { background:var(--tag-bg); color:var(--tag-color);
+           border-radius:4px; padding:1px 7px;
+           font-size:.72rem; font-weight:500 }
+    .card h3 { font-size:1rem; font-weight:600; margin-bottom:.35rem }
+    .card h3 a { color:var(--heading); text-decoration:none }
+    .card h3 a:hover { color:var(--accent) }
+    .card p { font-size:.875rem; color:var(--muted) }
+
+    .like-btn { position:absolute; left:.9rem; top:1.05rem;
+                background:none; border:none; cursor:pointer;
+                font-size:1.3rem; line-height:1; padding:2px;
+                color:var(--like-off); transition:color .15s,transform .15s }
+    .like-btn:hover { transform:scale(1.25) }
+    .like-btn.liked { color:var(--like-on) }
+    .like-btn.saving { opacity:.4; pointer-events:none }
+    .like-btn.pop { animation:pop .25s ease }
+    @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.5)} 100%{transform:scale(1)} }
+
+    #liked-view { display:none }
+    #liked-view.active { display:block }
+    #feed-view.hidden { display:none }
+    .liked-header { font-size:.875rem; color:var(--muted); margin-bottom:1.25rem }
+    .liked-empty { text-align:center; color:var(--muted); padding:3rem 0 }
+    .unlike-hint { font-size:.72rem; color:var(--muted); margin-top:.25rem; opacity:.7 }
+    .empty { text-align:center; color:var(--muted); padding:3rem 0 }
+    footer { margin-top:3rem; padding-top:1rem; border-top:1px solid var(--border);
+             font-size:.78rem; color:var(--muted); text-align:center }
   </style>
 </head>
 <body>
-  <div>
-    <div style="font-size:2.5rem;margin-bottom:1rem">🔭</div>
-    <h1>Curiosity Digest</h1>
-    <p>First digest hasn't run yet.<br><br>
-       Go to your GitHub repo → <strong>Actions</strong> tab →
-       <strong>Weekly Science Page</strong> → <strong>Run workflow</strong>.
-       This page updates automatically in about a minute.</p>
+
+<header>
+  <h1>🔭 Curiosity Digest</h1>
+  <p class="meta">
+    Updated May 05, 2026 at 21:44 UTC &nbsp;·&nbsp; 44 posts &nbsp;·&nbsp;
+    <a href="rejected.html">14 filtered →</a> &nbsp;·&nbsp;
+    <a href="https://raw.githubusercontent.com/mailtotanvir/curiosity-digest/main/likes.json" target="_blank">likes.json →</a>
+    <span class="status" id="status"></span>
+  </p>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" data-cat="all">All</button>
+  
+  <button class="tab-btn" data-cat="Astronomy">Astronomy</button>
+  
+  <button class="tab-btn" data-cat="Biology">Biology</button>
+  
+  <button class="tab-btn" data-cat="Experiments">Experiments</button>
+  
+  <button class="tab-btn" data-cat="Mathematics">Mathematics</button>
+  
+  <button class="tab-btn" data-cat="Nature">Nature</button>
+  
+  <button class="tab-btn" data-cat="Physics">Physics</button>
+  
+  <button class="tab-btn" data-cat="Science">Science</button>
+  
+  <button class="tab-btn" data-cat="Technology">Technology</button>
+  
+  <button class="tab-btn" id="liked-tab">
+    ♥ Liked <span class="badge" id="like-badge"></span>
+  </button>
+</div>
+
+<div id="feed-view">
+
+  
+  <div class="card"
+       data-id="37249f326d9a"
+       data-cat="Science"
+       data-title="The 50-year quest to create a quantum spin liquid may finally be over"
+       data-source="New Scientist"
+       data-date="May 05"
+       data-cat-label="Science"
+       data-link="https://www.newscientist.com/article/2523438-the-50-year-quest-to-create-a-quantum-spin-liquid-may-finally-be-over/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
+       data-summary="Creating quantum entanglement inside a solid material is tricky in the lab – but crystals buried in the earth could be growing it naturally. Now one scientist says he has proof he’s found them">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>New Scientist</span> · <span>May 05</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.6">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2523438-the-50-year-quest-to-create-a-quantum-spin-liquid-may-finally-be-over/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home" target="_blank" rel="noopener">The 50-year quest to create a quantum spin liquid may finally be over</a></h3>
+    <p>Creating quantum entanglement inside a solid material is tricky in the lab – but crystals buried in the earth could be growing it naturally. Now one scientist says he has proof he’s found them</p>
   </div>
+  
+  <div class="card"
+       data-id="a09bf4fecb09"
+       data-cat="Science"
+       data-title="Backlash builds over NHS plan to hide source code from AI hacking risk"
+       data-source="New Scientist"
+       data-date="May 05"
+       data-cat-label="Science"
+       data-link="https://www.newscientist.com/article/2525315-backlash-builds-over-nhs-plan-to-hide-source-code-from-ai-hacking-risk/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
+       data-summary="NHS England is pulling its open-source software from the internet because of fears around computer-hacking AI models like Mythos. Opposition is growing among those who say the move is bad for transparency and efficiency,…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>New Scientist</span> · <span>May 05</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.6">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2525315-backlash-builds-over-nhs-plan-to-hide-source-code-from-ai-hacking-risk/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home" target="_blank" rel="noopener">Backlash builds over NHS plan to hide source code from AI hacking risk</a></h3>
+    <p>NHS England is pulling its open-source software from the internet because of fears around computer-hacking AI models like Mythos. Opposition is growing among those who say the move is bad for transparency and efficiency,…</p>
+  </div>
+  
+  <div class="card"
+       data-id="56445ec58aac"
+       data-cat="Science"
+       data-title="Quantum computers simulated their biggest molecule yet – with help"
+       data-source="New Scientist"
+       data-date="May 05"
+       data-cat-label="Science"
+       data-link="https://www.newscientist.com/article/2525277-quantum-computers-simulated-their-biggest-molecule-yet-with-help/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
+       data-summary="Two quantum computers and two supercomputers teamed up to break the record for the biggest molecule yet to be simulated using quantum hardware">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>New Scientist</span> · <span>May 05</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.6">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2525277-quantum-computers-simulated-their-biggest-molecule-yet-with-help/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home" target="_blank" rel="noopener">Quantum computers simulated their biggest molecule yet – with help</a></h3>
+    <p>Two quantum computers and two supercomputers teamed up to break the record for the biggest molecule yet to be simulated using quantum hardware</p>
+  </div>
+  
+  <div class="card"
+       data-id="556c9b6ff778"
+       data-cat="Astronomy"
+       data-title="NASA’s Perseverance Mars Rover Surveys ‘Crocodile Bridge’"
+       data-source="NASA News"
+       data-date="May 05"
+       data-cat-label="Astronomy"
+       data-link="https://science.nasa.gov/photojournal/nasas-perseverance-mars-rover-surveys-crocodile-bridge/"
+       data-summary="Description NASA’s Perseverance Mars rover used its Mastcam-Z camera system to capture this 360-degree panorama of a region nicknamed “Crocodile Bridge” on Jezero Crater’s rim. The panorama is made up of 980 images, 971 …">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>NASA News</span> · <span>May 05</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.6">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://science.nasa.gov/photojournal/nasas-perseverance-mars-rover-surveys-crocodile-bridge/" target="_blank" rel="noopener">NASA’s Perseverance Mars Rover Surveys ‘Crocodile Bridge’</a></h3>
+    <p>Description NASA’s Perseverance Mars rover used its Mastcam-Z camera system to capture this 360-degree panorama of a region nicknamed “Crocodile Bridge” on Jezero Crater’s rim. The panorama is made up of 980 images, 971 …</p>
+  </div>
+  
+  <div class="card"
+       data-id="656f1875056f"
+       data-cat="Astronomy"
+       data-title="Curiosity Blog, Sols 4879-4885: Struggle at Atacama"
+       data-source="NASA News"
+       data-date="May 05"
+       data-cat-label="Astronomy"
+       data-link="https://science.nasa.gov/blog/curiosity-blog-sols-4879-4885-struggle-at-atacama/"
+       data-summary="Written by William Farrand, Senior Research Scientist, Space Science Institute Earth planning date: Friday, May 1, 2026 Chile’s Atacama desert is the driest mid-latitude desert in the world, receiving only 15 millimeters…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>NASA News</span> · <span>May 05</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.6">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://science.nasa.gov/blog/curiosity-blog-sols-4879-4885-struggle-at-atacama/" target="_blank" rel="noopener">Curiosity Blog, Sols 4879-4885: Struggle at Atacama</a></h3>
+    <p>Written by William Farrand, Senior Research Scientist, Space Science Institute Earth planning date: Friday, May 1, 2026 Chile’s Atacama desert is the driest mid-latitude desert in the world, receiving only 15 millimeters…</p>
+  </div>
+  
+  <div class="card"
+       data-id="3e4b6e75f2e7"
+       data-cat="Astronomy"
+       data-title="650 NASA Volunteers Have Co-Authored Scientific Papers"
+       data-source="NASA News"
+       data-date="May 05"
+       data-cat-label="Astronomy"
+       data-link="https://science.nasa.gov/get-involved/citizen-science/650-nasa-volunteers-have-co-authored-scientific-papers/"
+       data-summary="After a recent count, NASA Citizen Science is proud to report that more than 650 people who have volunteered to participate in NASA citizen science projects have co-authored peer-reviewed research papers with scientists …">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>NASA News</span> · <span>May 05</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.6">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://science.nasa.gov/get-involved/citizen-science/650-nasa-volunteers-have-co-authored-scientific-papers/" target="_blank" rel="noopener">650 NASA Volunteers Have Co-Authored Scientific Papers</a></h3>
+    <p>After a recent count, NASA Citizen Science is proud to report that more than 650 people who have volunteered to participate in NASA citizen science projects have co-authored peer-reviewed research papers with scientists …</p>
+  </div>
+  
+  <div class="card"
+       data-id="871e9572c176"
+       data-cat="Astronomy"
+       data-title="NASA’s Curiosity Rover Frees Its Drill From a Rock"
+       data-source="NASA News"
+       data-date="May 05"
+       data-cat-label="Astronomy"
+       data-link="https://science.nasa.gov/photojournal/nasas-curiosity-rover-frees-its-drill-from-a-rock/"
+       data-summary="Description This series of images shows NASA’s Curiosity Mars rover as it got a rock stuck to the drill on the end of its robotic arm and, after waving the arm and running the drill a few times, finally detached the rock…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>NASA News</span> · <span>May 05</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.6">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://science.nasa.gov/photojournal/nasas-curiosity-rover-frees-its-drill-from-a-rock/" target="_blank" rel="noopener">NASA’s Curiosity Rover Frees Its Drill From a Rock</a></h3>
+    <p>Description This series of images shows NASA’s Curiosity Mars rover as it got a rock stuck to the drill on the end of its robotic arm and, after waving the arm and running the drill a few times, finally detached the rock…</p>
+  </div>
+  
+  <div class="card"
+       data-id="dafbd8edf0ab"
+       data-cat="Astronomy"
+       data-title="NASA Astronaut to Answer Questions from Students in Florida"
+       data-source="NASA News"
+       data-date="May 05"
+       data-cat-label="Astronomy"
+       data-link="https://www.nasa.gov/general/nasa-astronaut-to-answer-questions-from-students-in-florida/"
+       data-summary="Students in Florida will hear from NASA astronaut Chris Williams as he answers prerecorded science, technology, engineering, and mathematics (STEM) questions while aboard the International Space Station. The Earth-to-spa…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>NASA News</span> · <span>May 05</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.6">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://www.nasa.gov/general/nasa-astronaut-to-answer-questions-from-students-in-florida/" target="_blank" rel="noopener">NASA Astronaut to Answer Questions from Students in Florida</a></h3>
+    <p>Students in Florida will hear from NASA astronaut Chris Williams as he answers prerecorded science, technology, engineering, and mathematics (STEM) questions while aboard the International Space Station. The Earth-to-spa…</p>
+  </div>
+  
+  <div class="card"
+       data-id="9c38fbaa5095"
+       data-cat="Astronomy"
+       data-title="NASA Research Shows Early Life Relied on Rare Metal"
+       data-source="NASA News"
+       data-date="May 05"
+       data-cat-label="Astronomy"
+       data-link="https://science.nasa.gov/science-research/planetary-science/astrobiology/nasa-research-shows-early-life-relied-on-rare-metal/"
+       data-summary="NASA-funded scientists have discovered that life on Earth over 3 billion years ago relied on the metal molybdenum, which was incredibly scarce in the environment at the time. The study, published in Nature Communications…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>NASA News</span> · <span>May 05</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.6">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://science.nasa.gov/science-research/planetary-science/astrobiology/nasa-research-shows-early-life-relied-on-rare-metal/" target="_blank" rel="noopener">NASA Research Shows Early Life Relied on Rare Metal</a></h3>
+    <p>NASA-funded scientists have discovered that life on Earth over 3 billion years ago relied on the metal molybdenum, which was incredibly scarce in the environment at the time. The study, published in Nature Communications…</p>
+  </div>
+  
+  <div class="card"
+       data-id="22c2edf2ff7b"
+       data-cat="Astronomy"
+       data-title="Building on America’s 65-Year Legacy of Human Spaceflight"
+       data-source="NASA News"
+       data-date="May 05"
+       data-cat-label="Astronomy"
+       data-link="https://www.nasa.gov/image-article/building-on-americas-65-year-legacy-of-human-spaceflight/"
+       data-summary="On the morning of May 5, 1961, the Mercury-Redstone 3 launch vehicle lifted into the sky from Cape Canaveral, Florida, carrying astronaut Alan B. Shepard Jr. Over the next 15 minutes, Shepard ascended to an altitude of 1…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>NASA News</span> · <span>May 05</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.6">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://www.nasa.gov/image-article/building-on-americas-65-year-legacy-of-human-spaceflight/" target="_blank" rel="noopener">Building on America’s 65-Year Legacy of Human Spaceflight</a></h3>
+    <p>On the morning of May 5, 1961, the Mercury-Redstone 3 launch vehicle lifted into the sky from Cape Canaveral, Florida, carrying astronaut Alan B. Shepard Jr. Over the next 15 minutes, Shepard ascended to an altitude of 1…</p>
+  </div>
+  
+  <div class="card"
+       data-id="9ade37e54867"
+       data-cat="Astronomy"
+       data-title="NASA’S Juno Misson Captures Jupiter Moon Thebe"
+       data-source="NASA News"
+       data-date="May 05"
+       data-cat-label="Astronomy"
+       data-link="https://science.nasa.gov/photojournal/nasas-juno-misson-captures-jupiter-moon-thebe/"
+       data-summary="Description NASA’s Juno spacecraft captured this view of Thebe, the second largest of Jupiter’s inner moons, during a close pass on May 1, 2026. The spacecraft’s Stellar Reference Unit (SRU) captured this image from a di…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>NASA News</span> · <span>May 05</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.6">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://science.nasa.gov/photojournal/nasas-juno-misson-captures-jupiter-moon-thebe/" target="_blank" rel="noopener">NASA’S Juno Misson Captures Jupiter Moon Thebe</a></h3>
+    <p>Description NASA’s Juno spacecraft captured this view of Thebe, the second largest of Jupiter’s inner moons, during a close pass on May 1, 2026. The spacecraft’s Stellar Reference Unit (SRU) captured this image from a di…</p>
+  </div>
+  
+  <div class="card"
+       data-id="f5cbf21df505"
+       data-cat="Astronomy"
+       data-title="New NASA HEAT Coloring Book Blends Art, Science, and Cultural Perspectives"
+       data-source="NASA News"
+       data-date="May 05"
+       data-cat-label="Astronomy"
+       data-link="https://science.nasa.gov/learning-resources/science-activation/new-nasa-heat-coloring-book-blends-art-science-and-cultural-perspectives/"
+       data-summary="A new Sun-centered and science-focused coloring book produced by NASA in partnership with the University of Alaska Fairbanks (UAF) is now available for people to learn while showing their artistic side.">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>NASA News</span> · <span>May 05</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.6">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://science.nasa.gov/learning-resources/science-activation/new-nasa-heat-coloring-book-blends-art-science-and-cultural-perspectives/" target="_blank" rel="noopener">New NASA HEAT Coloring Book Blends Art, Science, and Cultural Perspectives</a></h3>
+    <p>A new Sun-centered and science-focused coloring book produced by NASA in partnership with the University of Alaska Fairbanks (UAF) is now available for people to learn while showing their artistic side.</p>
+  </div>
+  
+  <div class="card"
+       data-id="019712579d6c"
+       data-cat="Astronomy"
+       data-title="NASA Volunteers Double Known Population of Brown Dwarfs"
+       data-source="NASA News"
+       data-date="May 05"
+       data-cat-label="Astronomy"
+       data-link="https://science.nasa.gov/get-involved/citizen-science/nasa-volunteers-double-known-population-of-brown-dwarfs/"
+       data-summary="A new paper from NASA’s Backyard Worlds: Planet 9 project announces that volunteers have essentially doubled the number of known brown dwarfs, with over 3,000 new discoveries made over the past 10 years since the project…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>NASA News</span> · <span>May 05</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.6">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://science.nasa.gov/get-involved/citizen-science/nasa-volunteers-double-known-population-of-brown-dwarfs/" target="_blank" rel="noopener">NASA Volunteers Double Known Population of Brown Dwarfs</a></h3>
+    <p>A new paper from NASA’s Backyard Worlds: Planet 9 project announces that volunteers have essentially doubled the number of known brown dwarfs, with over 3,000 new discoveries made over the past 10 years since the project…</p>
+  </div>
+  
+  <div class="card"
+       data-id="4549f59759ce"
+       data-cat="Science"
+       data-title="GERMANY IS OVER"
+       data-source="Kurzgesagt"
+       data-date="May 05"
+       data-cat-label="Science"
+       data-link="https://www.youtube.com/watch?v=n-gYFcVx-8Y"
+       data-summary="Do you have a balanced news diet? Go to https://ground.news/nutshell to see reporting from a variety of sources and perspectives around the world. Subscribe for 40% off their unlimited access Vantage plan through our lin…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>Kurzgesagt</span> · <span>May 05</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.6">trusted source (Science)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/watch?v=n-gYFcVx-8Y" target="_blank" rel="noopener">GERMANY IS OVER</a></h3>
+    <p>Do you have a balanced news diet? Go to https://ground.news/nutshell to see reporting from a variety of sources and perspectives around the world. Subscribe for 40% off their unlimited access Vantage plan through our lin…</p>
+  </div>
+  
+  <div class="card"
+       data-id="d8d9fc6b898c"
+       data-cat="Nature"
+       data-title="Golden eagles and alien microbes #NHM #Nature #News"
+       data-source="Nat. History Museum"
+       data-date="May 05"
+       data-cat-label="Nature"
+       data-link="https://www.youtube.com/shorts/U02CDEcg204"
+       data-summary="The reintroduction of golden eagles to the UK, what we’re doing to protect Earth from alien microbes and the discovery of an axolotl in a Welsh river!
+
+For this week’s nature news, we’ve got you covered.
+
+#NaturalHistory…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>Nat. History Museum</span> · <span>May 05</span>
+      <span class="tag">Nature</span>
+      <span class="tag" style="opacity:.6">trusted source (Nature)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/shorts/U02CDEcg204" target="_blank" rel="noopener">Golden eagles and alien microbes #NHM #Nature #News</a></h3>
+    <p>The reintroduction of golden eagles to the UK, what we’re doing to protect Earth from alien microbes and the discovery of an axolotl in a Welsh river!
+
+For this week’s nature news, we’ve got you covered.
+
+#NaturalHistory…</p>
+  </div>
+  
+  <div class="card"
+       data-id="ecb0d5f5b259"
+       data-cat="Biology"
+       data-title="The Hidden Mathematical Dance Inside Plant Cells"
+       data-source="Quanta Magazine"
+       data-date="May 04"
+       data-cat-label="Biology"
+       data-link="https://www.quantamagazine.org/the-hidden-mathematical-dance-inside-plant-cells-20260504/"
+       data-summary="The sunlight-collecting organelles known as chloroplasts solve a packing problem: how to optimize photosynthesis without sustaining damage from dangerously intense rays.            The post The Hidden Mathematical Dance …">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>Quanta Magazine</span> · <span>May 04</span>
+      <span class="tag">Biology</span>
+      <span class="tag" style="opacity:.6">category: biology</span>
+    </div>
+    <h3><a href="https://www.quantamagazine.org/the-hidden-mathematical-dance-inside-plant-cells-20260504/" target="_blank" rel="noopener">The Hidden Mathematical Dance Inside Plant Cells</a></h3>
+    <p>The sunlight-collecting organelles known as chloroplasts solve a packing problem: how to optimize photosynthesis without sustaining damage from dangerously intense rays.            The post The Hidden Mathematical Dance …</p>
+  </div>
+  
+  <div class="card"
+       data-id="718e0afbbbcf"
+       data-cat="Science"
+       data-title="Tiny frozen world unexpectedly appears to have an atmosphere"
+       data-source="New Scientist"
+       data-date="May 04"
+       data-cat-label="Science"
+       data-link="https://www.newscientist.com/article/2525175-tiny-frozen-world-unexpectedly-appears-to-have-an-atmosphere/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
+       data-summary="A 500-kilometre-wide object in a similar orbit to Pluto challenges our assumptions about small bodies in the outer solar system">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>New Scientist</span> · <span>May 04</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.6">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2525175-tiny-frozen-world-unexpectedly-appears-to-have-an-atmosphere/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home" target="_blank" rel="noopener">Tiny frozen world unexpectedly appears to have an atmosphere</a></h3>
+    <p>A 500-kilometre-wide object in a similar orbit to Pluto challenges our assumptions about small bodies in the outer solar system</p>
+  </div>
+  
+  <div class="card"
+       data-id="b699d3ac7c8d"
+       data-cat="Science"
+       data-title="300-year-old experiment could become world&#39;s best dark matter detector"
+       data-source="New Scientist"
+       data-date="May 04"
+       data-cat-label="Science"
+       data-link="https://www.newscientist.com/article/2524958-300-year-old-experiment-could-become-worlds-best-dark-matter-detector/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
+       data-summary="An update to an experiment run by Henry Cavendish in 1773 could be a cheaper and faster way to spot a potential dark matter particle – and may be 10,000 times more sensitive">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>New Scientist</span> · <span>May 04</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.6">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2524958-300-year-old-experiment-could-become-worlds-best-dark-matter-detector/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home" target="_blank" rel="noopener">300-year-old experiment could become world&#39;s best dark matter detector</a></h3>
+    <p>An update to an experiment run by Henry Cavendish in 1773 could be a cheaper and faster way to spot a potential dark matter particle – and may be 10,000 times more sensitive</p>
+  </div>
+  
+  <div class="card"
+       data-id="f6c730a5d341"
+       data-cat="Science"
+       data-title="The greatest David Attenborough documentaries you really need to watch"
+       data-source="New Scientist"
+       data-date="May 04"
+       data-cat-label="Science"
+       data-link="https://www.newscientist.com/article/2525104-the-greatest-david-attenborough-documentaries-you-really-need-to-watch/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
+       data-summary="To mark David Attenborough turning 100, New Scientist staff have been set a tricky task: pick your favourite of his many amazing documentaries...">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>New Scientist</span> · <span>May 04</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.6">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2525104-the-greatest-david-attenborough-documentaries-you-really-need-to-watch/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home" target="_blank" rel="noopener">The greatest David Attenborough documentaries you really need to watch</a></h3>
+    <p>To mark David Attenborough turning 100, New Scientist staff have been set a tricky task: pick your favourite of his many amazing documentaries...</p>
+  </div>
+  
+  <div class="card"
+       data-id="f551c0086122"
+       data-cat="Mathematics"
+       data-title="Entirely Ridiculously Big Numbers - Numberphile"
+       data-source="Numberphile"
+       data-date="May 04"
+       data-cat-label="Mathematics"
+       data-link="https://www.youtube.com/watch?v=SAtFZPtbMpI"
+       data-summary="Rubik&#39;s Cube combinations quickly lead to some unimaginably large numbers. More links &amp; stuff in full description below ↓↓↓
+
+Extra footage on odd-numbered cubes: https://youtu.be/CTb7RyTwoQ0
+
+Featuring Richard Elwes. Mor…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>Numberphile</span> · <span>May 04</span>
+      <span class="tag">Mathematics</span>
+      <span class="tag" style="opacity:.6">trusted source (Mathematics)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/watch?v=SAtFZPtbMpI" target="_blank" rel="noopener">Entirely Ridiculously Big Numbers - Numberphile</a></h3>
+    <p>Rubik&#39;s Cube combinations quickly lead to some unimaginably large numbers. More links &amp; stuff in full description below ↓↓↓
+
+Extra footage on odd-numbered cubes: https://youtu.be/CTb7RyTwoQ0
+
+Featuring Richard Elwes. Mor…</p>
+  </div>
+  
+  <div class="card"
+       data-id="58e33988e0c0"
+       data-cat="Technology"
+       data-title="This Machine Grows Diamonds"
+       data-source="Cleo Abram"
+       data-date="May 04"
+       data-cat-label="Technology"
+       data-link="https://www.youtube.com/shorts/B9ocddyGfo8"
+       data-summary="This crazy machine mimics the inside of the Earth to grow diamonds. 
+
+If you dig deep into the Earth’s mantle, you’ll enter hot, plastic-like rock filled with carbon atoms. These atoms are squeezed together over millions…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>Cleo Abram</span> · <span>May 04</span>
+      <span class="tag">Technology</span>
+      <span class="tag" style="opacity:.6">trusted source (Technology)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/shorts/B9ocddyGfo8" target="_blank" rel="noopener">This Machine Grows Diamonds</a></h3>
+    <p>This crazy machine mimics the inside of the Earth to grow diamonds. 
+
+If you dig deep into the Earth’s mantle, you’ll enter hot, plastic-like rock filled with carbon atoms. These atoms are squeezed together over millions…</p>
+  </div>
+  
+  <div class="card"
+       data-id="4c7c5ffc1378"
+       data-cat="Nature"
+       data-title="Our David Attenborough specimens: Nature, knowledge and a lasting legacy"
+       data-source="Nat. History Museum"
+       data-date="May 04"
+       data-cat-label="Nature"
+       data-link="https://www.youtube.com/watch?v=ToGZ8ZkUaxY"
+       data-summary="To celebrate 100 years of Sir David Attenborough’s extraordinary legacy, we take a look at two remarkable species named in his honour: Sylvicanthon attenboroughi, a dung beetle, and Attenborosaurus conybeari, a prehistor…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>Nat. History Museum</span> · <span>May 04</span>
+      <span class="tag">Nature</span>
+      <span class="tag" style="opacity:.6">trusted source (Nature)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/watch?v=ToGZ8ZkUaxY" target="_blank" rel="noopener">Our David Attenborough specimens: Nature, knowledge and a lasting legacy</a></h3>
+    <p>To celebrate 100 years of Sir David Attenborough’s extraordinary legacy, we take a look at two remarkable species named in his honour: Sylvicanthon attenboroughi, a dung beetle, and Attenborosaurus conybeari, a prehistor…</p>
+  </div>
+  
+  <div class="card"
+       data-id="c1f9c5495387"
+       data-cat="Physics"
+       data-title="Can a quantum sensor detect your heartbeat from 60 km away?"
+       data-source="Veritasium"
+       data-date="May 03"
+       data-cat-label="Physics"
+       data-link="https://www.youtube.com/watch?v=SVTPv4sI_Jc"
+       data-summary="Is the CIA’s Ghost Murmur technology real? Sponsored by Ground News. Go to https://ground.news/Ve for 40% off the unlimited Vantage plan. 
+
+If you’re looking for a molecular modelling kit, try Snatoms, a kit I invented w…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>Veritasium</span> · <span>May 03</span>
+      <span class="tag">Physics</span>
+      <span class="tag" style="opacity:.6">trusted source (Physics)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/watch?v=SVTPv4sI_Jc" target="_blank" rel="noopener">Can a quantum sensor detect your heartbeat from 60 km away?</a></h3>
+    <p>Is the CIA’s Ghost Murmur technology real? Sponsored by Ground News. Go to https://ground.news/Ve for 40% off the unlimited Vantage plan. 
+
+If you’re looking for a molecular modelling kit, try Snatoms, a kit I invented w…</p>
+  </div>
+  
+  <div class="card"
+       data-id="352686b90a9e"
+       data-cat="Nature"
+       data-title="Finding this alive is like finding a plesiosaur in your bathtub #NHM #Mollusca #Extinct"
+       data-source="Nat. History Museum"
+       data-date="May 03"
+       data-cat-label="Nature"
+       data-link="https://www.youtube.com/shorts/lx3xgP-iwEs"
+       data-summary="Join us for another episode of The &#39;Perfect&#39; Specimen, this week Josh and Natalie are joined by curator Dr Katie Collins with three specimens all relating to the word &#39;Misunderstood&#39;.  Katie brings some fossil bivalves, …">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>Nat. History Museum</span> · <span>May 03</span>
+      <span class="tag">Nature</span>
+      <span class="tag" style="opacity:.6">trusted source (Nature)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/shorts/lx3xgP-iwEs" target="_blank" rel="noopener">Finding this alive is like finding a plesiosaur in your bathtub #NHM #Mollusca #Extinct</a></h3>
+    <p>Join us for another episode of The &#39;Perfect&#39; Specimen, this week Josh and Natalie are joined by curator Dr Katie Collins with three specimens all relating to the word &#39;Misunderstood&#39;.  Katie brings some fossil bivalves, …</p>
+  </div>
+  
+  <div class="card"
+       data-id="d281bda75d82"
+       data-cat="Technology"
+       data-title="Why Antarctica Has SO MANY Meteorites"
+       data-source="Cleo Abram"
+       data-date="May 02"
+       data-cat-label="Technology"
+       data-link="https://www.youtube.com/shorts/5LJ1cxjQhyE"
+       data-summary="Why do we find SO MANY meteorites in Antarctica? 60% of meteorites found on Earth are found there! It’s not because it’s at the pole.
+
+The reason is these special blue ice areas. And how they form…
+
+For more adventures i…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>Cleo Abram</span> · <span>May 02</span>
+      <span class="tag">Technology</span>
+      <span class="tag" style="opacity:.6">trusted source (Technology)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/shorts/5LJ1cxjQhyE" target="_blank" rel="noopener">Why Antarctica Has SO MANY Meteorites</a></h3>
+    <p>Why do we find SO MANY meteorites in Antarctica? 60% of meteorites found on Earth are found there! It’s not because it’s at the pole.
+
+The reason is these special blue ice areas. And how they form…
+
+For more adventures i…</p>
+  </div>
+  
+  <div class="card"
+       data-id="650148141187"
+       data-cat="Experiments"
+       data-title="Gravity Assists Are Basically Free Energy"
+       data-source="The Action Lab"
+       data-date="May 02"
+       data-cat-label="Experiments"
+       data-link="https://www.youtube.com/watch?v=1baBzd1XPkU"
+       data-summary="Checkout Freecash Here: https://bit.ly/TalYT">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>The Action Lab</span> · <span>May 02</span>
+      <span class="tag">Experiments</span>
+      <span class="tag" style="opacity:.6">trusted source (Experiments)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/watch?v=1baBzd1XPkU" target="_blank" rel="noopener">Gravity Assists Are Basically Free Energy</a></h3>
+    <p>Checkout Freecash Here: https://bit.ly/TalYT</p>
+  </div>
+  
+  <div class="card"
+       data-id="a158ae39a351"
+       data-cat="Nature"
+       data-title="What is parthenogenesis? #NHM #Lizard #Reproduction"
+       data-source="Nat. History Museum"
+       data-date="May 02"
+       data-cat-label="Nature"
+       data-link="https://www.youtube.com/shorts/Y2E-6T225MU"
+       data-summary="Whiptail lizards are an all-female species, using a process called parthenogenesis to reproduce, which means they don’t need males.
+
+But how does it work? Museum scientist Miranda Sherlock explains.
+
+#NaturalHistoryMuseu…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>Nat. History Museum</span> · <span>May 02</span>
+      <span class="tag">Nature</span>
+      <span class="tag" style="opacity:.6">trusted source (Nature)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/shorts/Y2E-6T225MU" target="_blank" rel="noopener">What is parthenogenesis? #NHM #Lizard #Reproduction</a></h3>
+    <p>Whiptail lizards are an all-female species, using a process called parthenogenesis to reproduce, which means they don’t need males.
+
+But how does it work? Museum scientist Miranda Sherlock explains.
+
+#NaturalHistoryMuseu…</p>
+  </div>
+  
+  <div class="card"
+       data-id="fac89edf1e6e"
+       data-cat="Biology"
+       data-title="A Treasure Trove of Cambrian Fossils Rewrites the Story of Early Life"
+       data-source="Quanta Magazine"
+       data-date="May 01"
+       data-cat-label="Biology"
+       data-link="https://www.quantamagazine.org/a-treasure-trove-of-cambrian-fossils-rewrites-the-story-of-early-life-20260501/"
+       data-summary="Remarkably preserved fossils found in southern China offer a fascinating window into what life looked like at the end of the Cambrian explosion, with half of the species uncovered being new to science.            The pos…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>Quanta Magazine</span> · <span>May 01</span>
+      <span class="tag">Biology</span>
+      <span class="tag" style="opacity:.6">category: biology</span>
+    </div>
+    <h3><a href="https://www.quantamagazine.org/a-treasure-trove-of-cambrian-fossils-rewrites-the-story-of-early-life-20260501/" target="_blank" rel="noopener">A Treasure Trove of Cambrian Fossils Rewrites the Story of Early Life</a></h3>
+    <p>Remarkably preserved fossils found in southern China offer a fascinating window into what life looked like at the end of the Cambrian explosion, with half of the species uncovered being new to science.            The pos…</p>
+  </div>
+  
+  <div class="card"
+       data-id="ebce07a56064"
+       data-cat="Science"
+       data-title="An unorthodox version of quantum theory could reveal what reality is"
+       data-source="New Scientist"
+       data-date="May 01"
+       data-cat-label="Science"
+       data-link="https://www.newscientist.com/article/2524665-an-unorthodox-version-of-quantum-theory-could-reveal-what-reality-is/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
+       data-summary="The implications of quantum mechanics suggest reality isn&#39;t as solid as we think it is, but physicist David Bohm had a spin on the theory that restores reality. Columnist Karmela Padavic-Callaghan explores how we could t…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>New Scientist</span> · <span>May 01</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.6">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2524665-an-unorthodox-version-of-quantum-theory-could-reveal-what-reality-is/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home" target="_blank" rel="noopener">An unorthodox version of quantum theory could reveal what reality is</a></h3>
+    <p>The implications of quantum mechanics suggest reality isn&#39;t as solid as we think it is, but physicist David Bohm had a spin on the theory that restores reality. Columnist Karmela Padavic-Callaghan explores how we could t…</p>
+  </div>
+  
+  <div class="card"
+       data-id="faeaeca4c528"
+       data-cat="Science"
+       data-title="2026 will be the hottest year on record, leading scientist predicts"
+       data-source="New Scientist"
+       data-date="May 01"
+       data-cat-label="Science"
+       data-link="https://www.newscientist.com/article/2525229-2026-will-be-the-hottest-year-on-record-leading-scientist-predicts/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
+       data-summary="The second half of this year will almost certainly see the start of an El Niño phase that could lead to extreme heat across much of the globe, and James Hansen expects that to make this year surpass 2024 as the hottest o…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>New Scientist</span> · <span>May 01</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.6">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2525229-2026-will-be-the-hottest-year-on-record-leading-scientist-predicts/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home" target="_blank" rel="noopener">2026 will be the hottest year on record, leading scientist predicts</a></h3>
+    <p>The second half of this year will almost certainly see the start of an El Niño phase that could lead to extreme heat across much of the globe, and James Hansen expects that to make this year surpass 2024 as the hottest o…</p>
+  </div>
+  
+  <div class="card"
+       data-id="0ccff97b95ec"
+       data-cat="Science"
+       data-title="NHS England rushes to hide software over AI hacking fears"
+       data-source="New Scientist"
+       data-date="May 01"
+       data-cat-label="Science"
+       data-link="https://www.newscientist.com/article/2524962-nhs-england-rushes-to-hide-software-over-ai-hacking-fears/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
+       data-summary="National Health Service rules state that all software created with public money should be publicly available, but fears of computer-hacking AI models like Mythos have prompted a change in policy">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>New Scientist</span> · <span>May 01</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.6">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2524962-nhs-england-rushes-to-hide-software-over-ai-hacking-fears/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home" target="_blank" rel="noopener">NHS England rushes to hide software over AI hacking fears</a></h3>
+    <p>National Health Service rules state that all software created with public money should be publicly available, but fears of computer-hacking AI models like Mythos have prompted a change in policy</p>
+  </div>
+  
+  <div class="card"
+       data-id="bfd65405c666"
+       data-cat="Science"
+       data-title="Why I explore our inevitable love for robots in my novel Luminous"
+       data-source="New Scientist"
+       data-date="May 01"
+       data-cat-label="Science"
+       data-link="https://www.newscientist.com/article/2524931-why-i-explore-our-inevitable-love-for-robots-in-my-novel-luminous/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
+       data-summary="Silvia Park, author of the May read for the New Scientist Book Club, reveals how a book that was originally intended to be for children took a darker route following a death in the family">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>New Scientist</span> · <span>May 01</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.6">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2524931-why-i-explore-our-inevitable-love-for-robots-in-my-novel-luminous/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home" target="_blank" rel="noopener">Why I explore our inevitable love for robots in my novel Luminous</a></h3>
+    <p>Silvia Park, author of the May read for the New Scientist Book Club, reveals how a book that was originally intended to be for children took a darker route following a death in the family</p>
+  </div>
+  
+  <div class="card"
+       data-id="1137097ba38d"
+       data-cat="Science"
+       data-title="Read an extract from Luminous by Silvia Park"
+       data-source="New Scientist"
+       data-date="May 01"
+       data-cat-label="Science"
+       data-link="https://www.newscientist.com/article/2524921-read-an-extract-from-luminous-by-silvia-park/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
+       data-summary="In this extract from Luminous, the May read for the New Scientist Book Club, we meet a mysterious robot discovered in a salvage yard in Seoul, in a future reunified Korea">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>New Scientist</span> · <span>May 01</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.6">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2524921-read-an-extract-from-luminous-by-silvia-park/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home" target="_blank" rel="noopener">Read an extract from Luminous by Silvia Park</a></h3>
+    <p>In this extract from Luminous, the May read for the New Scientist Book Club, we meet a mysterious robot discovered in a salvage yard in Seoul, in a future reunified Korea</p>
+  </div>
+  
+  <div class="card"
+       data-id="0de7590d3ef3"
+       data-cat="Science"
+       data-title="Will Colombia summit kick-start the end of the fossil fuel era?"
+       data-source="New Scientist"
+       data-date="May 01"
+       data-cat-label="Science"
+       data-link="https://www.newscientist.com/article/2525033-will-colombia-summit-kick-start-the-end-of-the-fossil-fuel-era/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
+       data-summary="With progress at COP climate meetings stalling, 57 countries took part in the first of a new series of conferences aiming to develop road maps away from fossil fuels, but big emitters like China and the US were absent">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>New Scientist</span> · <span>May 01</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.6">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2525033-will-colombia-summit-kick-start-the-end-of-the-fossil-fuel-era/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home" target="_blank" rel="noopener">Will Colombia summit kick-start the end of the fossil fuel era?</a></h3>
+    <p>With progress at COP climate meetings stalling, 57 countries took part in the first of a new series of conferences aiming to develop road maps away from fossil fuels, but big emitters like China and the US were absent</p>
+  </div>
+  
+  <div class="card"
+       data-id="f7158881f18f"
+       data-cat="Science"
+       data-title="Pigeons Are GPS Drones"
+       data-source="Kurzgesagt"
+       data-date="Apr 30"
+       data-cat-label="Science"
+       data-link="https://www.youtube.com/shorts/RniYUmKs93U"
+       data-summary="Pigeons can pinpoint their location hundreds of kilometers from their roosts and navigate home autonomously, only using smell, the sun, and even Earth’s magnetic field. 
+
+#kurzgesagt
+#inanutshell #kurzgesagt_inanutshell …">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>Kurzgesagt</span> · <span>Apr 30</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.6">trusted source (Science)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/shorts/RniYUmKs93U" target="_blank" rel="noopener">Pigeons Are GPS Drones</a></h3>
+    <p>Pigeons can pinpoint their location hundreds of kilometers from their roosts and navigate home autonomously, only using smell, the sun, and even Earth’s magnetic field. 
+
+#kurzgesagt
+#inanutshell #kurzgesagt_inanutshell …</p>
+  </div>
+  
+  <div class="card"
+       data-id="e2f5db904201"
+       data-cat="Technology"
+       data-title="Our Brains Got Bigger. Now They’re Shrinking?"
+       data-source="Cleo Abram"
+       data-date="Apr 30"
+       data-cat-label="Technology"
+       data-link="https://www.youtube.com/shorts/dqazxW8R5BY"
+       data-summary="This chart shows human brains size over time. They got way bigger, fast. But now they’re shrinking? (No, it’s not the phones!)
+
+About 2 million years ago something changed and it altered the course of human evolution. Ou…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>Cleo Abram</span> · <span>Apr 30</span>
+      <span class="tag">Technology</span>
+      <span class="tag" style="opacity:.6">trusted source (Technology)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/shorts/dqazxW8R5BY" target="_blank" rel="noopener">Our Brains Got Bigger. Now They’re Shrinking?</a></h3>
+    <p>This chart shows human brains size over time. They got way bigger, fast. But now they’re shrinking? (No, it’s not the phones!)
+
+About 2 million years ago something changed and it altered the course of human evolution. Ou…</p>
+  </div>
+  
+  <div class="card"
+       data-id="6c4a3ae7f4f9"
+       data-cat="Experiments"
+       data-title="Creating Liquid Sandwiches With Just Three Ingredients..."
+       data-source="Sick Science!"
+       data-date="Apr 30"
+       data-cat-label="Experiments"
+       data-link="https://www.youtube.com/shorts/NLahOD9N6kY"
+       data-summary="Steve uses water, salt, and food coloring to make incredible &#34;liquid sandwiches&#34; in a straw. 
+
+#sciencecommunicator #stevespangler #diyscience  #handsonscience #experiment 
+
+What’s Steve doing now? ► https://linktr.ee/st…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>Sick Science!</span> · <span>Apr 30</span>
+      <span class="tag">Experiments</span>
+      <span class="tag" style="opacity:.6">trusted source (Experiments)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/shorts/NLahOD9N6kY" target="_blank" rel="noopener">Creating Liquid Sandwiches With Just Three Ingredients...</a></h3>
+    <p>Steve uses water, salt, and food coloring to make incredible &#34;liquid sandwiches&#34; in a straw. 
+
+#sciencecommunicator #stevespangler #diyscience  #handsonscience #experiment 
+
+What’s Steve doing now? ► https://linktr.ee/st…</p>
+  </div>
+  
+  <div class="card"
+       data-id="2ad0cd4f22aa"
+       data-cat="Nature"
+       data-title="Golden eagles to alien microbes | Nature news you need to know"
+       data-source="Nat. History Museum"
+       data-date="Apr 30"
+       data-cat-label="Nature"
+       data-link="https://www.youtube.com/watch?v=9XEXBuWIs7I"
+       data-summary="The reintroduction of golden eagles to the UK, the devastating impact of warming oceans on Australian seabirds, what we’re doing to protect Earth from alien microbes and the discovery of an axolotl not where it should be…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>Nat. History Museum</span> · <span>Apr 30</span>
+      <span class="tag">Nature</span>
+      <span class="tag" style="opacity:.6">trusted source (Nature)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/watch?v=9XEXBuWIs7I" target="_blank" rel="noopener">Golden eagles to alien microbes | Nature news you need to know</a></h3>
+    <p>The reintroduction of golden eagles to the UK, the devastating impact of warming oceans on Australian seabirds, what we’re doing to protect Earth from alien microbes and the discovery of an axolotl not where it should be…</p>
+  </div>
+  
+  <div class="card"
+       data-id="4e4dea004bbf"
+       data-cat="Mathematics"
+       data-title="What Can We Gain by Losing Infinity?"
+       data-source="Quanta Magazine"
+       data-date="Apr 29"
+       data-cat-label="Mathematics"
+       data-link="https://www.quantamagazine.org/what-can-we-gain-by-losing-infinity-20260429/"
+       data-summary="Ultrafinitism, a philosophy that rejects the infinite, has long been dismissed as mathematical heresy. But it is also producing new insights in math and beyond.            The post What Can We Gain by Losing Infinity? fi…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>Quanta Magazine</span> · <span>Apr 29</span>
+      <span class="tag">Mathematics</span>
+      <span class="tag" style="opacity:.6">category: mathematics</span>
+    </div>
+    <h3><a href="https://www.quantamagazine.org/what-can-we-gain-by-losing-infinity-20260429/" target="_blank" rel="noopener">What Can We Gain by Losing Infinity?</a></h3>
+    <p>Ultrafinitism, a philosophy that rejects the infinite, has long been dismissed as mathematical heresy. But it is also producing new insights in math and beyond.            The post What Can We Gain by Losing Infinity? fi…</p>
+  </div>
+  
+  <div class="card"
+       data-id="6ab24aa436ab"
+       data-cat="Mathematics"
+       data-title="Why Math’s Final Axiom Proved So Controversial"
+       data-source="Quanta Magazine"
+       data-date="Apr 29"
+       data-cat-label="Mathematics"
+       data-link="https://www.quantamagazine.org/why-maths-final-axiom-proved-so-controversial-20260429/"
+       data-summary="Zermelo-Fraenkel set theory is so widely accepted that modern mathematicians hardly think about it. But believing in its core principles didn’t come easily.            The post Why Math’s Final Axiom Proved So Controvers…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>Quanta Magazine</span> · <span>Apr 29</span>
+      <span class="tag">Mathematics</span>
+      <span class="tag" style="opacity:.6">category: mathematics</span>
+    </div>
+    <h3><a href="https://www.quantamagazine.org/why-maths-final-axiom-proved-so-controversial-20260429/" target="_blank" rel="noopener">Why Math’s Final Axiom Proved So Controversial</a></h3>
+    <p>Zermelo-Fraenkel set theory is so widely accepted that modern mathematicians hardly think about it. But believing in its core principles didn’t come easily.            The post Why Math’s Final Axiom Proved So Controvers…</p>
+  </div>
+  
+  <div class="card"
+       data-id="0cfbb8937ef9"
+       data-cat="Science"
+       data-title="Why dinosaurs lived much more complex lives than we thought"
+       data-source="New Scientist"
+       data-date="Apr 29"
+       data-cat-label="Science"
+       data-link="https://www.newscientist.com/article/2522448-why-dinosaurs-lived-much-more-complex-lives-than-we-thought/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
+       data-summary="A wave of dinosaur discoveries over the past decade has completely reshaped our understanding of these long-extinct animals. Palaeontologist Dave Hone spills the secrets of how dinosaurs lived, from how social they were …">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>New Scientist</span> · <span>Apr 29</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.6">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2522448-why-dinosaurs-lived-much-more-complex-lives-than-we-thought/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home" target="_blank" rel="noopener">Why dinosaurs lived much more complex lives than we thought</a></h3>
+    <p>A wave of dinosaur discoveries over the past decade has completely reshaped our understanding of these long-extinct animals. Palaeontologist Dave Hone spills the secrets of how dinosaurs lived, from how social they were …</p>
+  </div>
+  
+  <div class="card"
+       data-id="e5b5d090bb5a"
+       data-cat="Science"
+       data-title="Our verdict on Red Mars: Mostly great, with a few quibbles"
+       data-source="New Scientist"
+       data-date="Apr 29"
+       data-cat-label="Science"
+       data-link="https://www.newscientist.com/article/2524419-our-verdict-on-red-mars-mostly-great-with-a-few-quibbles/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
+       data-summary="The New Scientist Book Club read Kim Stanley Robinson&#39;s acclaimed science fiction story about the first settlers on Mars in April – and had a lot to say about it">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>New Scientist</span> · <span>Apr 29</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.6">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2524419-our-verdict-on-red-mars-mostly-great-with-a-few-quibbles/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home" target="_blank" rel="noopener">Our verdict on Red Mars: Mostly great, with a few quibbles</a></h3>
+    <p>The New Scientist Book Club read Kim Stanley Robinson&#39;s acclaimed science fiction story about the first settlers on Mars in April – and had a lot to say about it</p>
+  </div>
+  
+  <div class="card"
+       data-id="1928f4d7cf66"
+       data-cat="Physics"
+       data-title="The Disaster I Never Imagined Having To Worry About"
+       data-source="Veritasium"
+       data-date="Apr 29"
+       data-cat-label="Physics"
+       data-link="https://www.youtube.com/watch?v=ksn5yrsC3Wg"
+       data-summary="The crystals that wiped out an HIV medication, almost overnight. Thanks to SoFi for sponsoring the video! Click here to sign-up for SoFi Checking and Savings: https://sofi.com/ve 
+
+If you’re looking for a molecular model…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>Veritasium</span> · <span>Apr 29</span>
+      <span class="tag">Physics</span>
+      <span class="tag" style="opacity:.6">trusted source (Physics)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/watch?v=ksn5yrsC3Wg" target="_blank" rel="noopener">The Disaster I Never Imagined Having To Worry About</a></h3>
+    <p>The crystals that wiped out an HIV medication, almost overnight. Thanks to SoFi for sponsoring the video! Click here to sign-up for SoFi Checking and Savings: https://sofi.com/ve 
+
+If you’re looking for a molecular model…</p>
+  </div>
+  
+  <div class="card"
+       data-id="5deac0fcabc6"
+       data-cat="Technology"
+       data-title="How They Build Underwater Tunnels"
+       data-source="Cleo Abram"
+       data-date="Apr 29"
+       data-cat-label="Technology"
+       data-link="https://www.youtube.com/shorts/pG99B0ui06s"
+       data-summary="How do they build underwater tunnels? How do they not fill up with water!?
+
+Here’s how the British and French built the Channel Tunnel, one of the longest undersea tunnels… 
+
+For more stories like this, subscribe.
+
+#shor…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>Cleo Abram</span> · <span>Apr 29</span>
+      <span class="tag">Technology</span>
+      <span class="tag" style="opacity:.6">trusted source (Technology)</span>
+    </div>
+    <h3><a href="https://www.youtube.com/shorts/pG99B0ui06s" target="_blank" rel="noopener">How They Build Underwater Tunnels</a></h3>
+    <p>How do they build underwater tunnels? How do they not fill up with water!?
+
+Here’s how the British and French built the Channel Tunnel, one of the longest undersea tunnels… 
+
+For more stories like this, subscribe.
+
+#shor…</p>
+  </div>
+  
+
+</div>
+
+<div id="liked-view">
+  <p class="liked-header">Posts saved across all digests — stored in your repo.</p>
+  <div id="liked-cards"></div>
+</div>
+
+<footer>Curiosity Digest · GitHub Actions · YouTube RSS &amp; public feeds · Likes via Vercel</footer>
+
+<script>
+  // No PAT here. Likes go via /api/like on this Vercel deployment.
+  const LIKES_RAW = "https://raw.githubusercontent.com/mailtotanvir/curiosity-digest/main/likes.json";
+
+  const statusEl = document.getElementById('status');
+  const badge    = document.getElementById('like-badge');
+  let likes = {};
+
+  function setStatus(msg, err=false) {
+    statusEl.textContent = msg;
+    statusEl.className = 'status' + (err ? ' err' : '');
+    if (msg && !err) setTimeout(() => statusEl.textContent = '', 3000);
+  }
+
+  function refreshBadge() {
+    const n = Object.keys(likes).length;
+    badge.textContent = n;
+    badge.classList.toggle('visible', n > 0);
+  }
+
+  async function loadLikes() {
+    try {
+      const r = await fetch(LIKES_RAW + '?cb=' + Date.now());
+      if (r.ok) likes = await r.json();
+    } catch(e) { console.warn('Could not load likes:', e); }
+  }
+
+  // POST to our Vercel serverless function — PAT never leaves the server
+  async function apiLike(action, card) {
+    const r = await fetch('/api/like', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action,
+        id:      card.dataset.id,
+        title:   card.dataset.title,
+        source:  card.dataset.source,
+        date:    card.dataset.date,
+        cat:     card.dataset.catLabel,
+        link:    card.dataset.link,
+        summary: card.dataset.summary || '',
+      }),
+    });
+    if (!r.ok) throw new Error(`API ${r.status}: ${await r.text()}`);
+    return r.json();
+  }
+
+  // Wire feed cards
+  document.querySelectorAll('#feed-view .card').forEach(card => {
+    const id  = card.dataset.id;
+    const btn = card.querySelector('.like-btn');
+    if (!btn) return;
+
+    btn.addEventListener('click', async () => {
+      const wasLiked = !!likes[id];
+      const action   = wasLiked ? 'unlike' : 'like';
+
+      // Optimistic update
+      if (wasLiked) { delete likes[id]; }
+      else {
+        likes[id] = { id, title: card.dataset.title, source: card.dataset.source,
+                      date: card.dataset.date, cat: card.dataset.catLabel,
+                      link: card.dataset.link, summary: card.dataset.summary || '',
+                      likedAt: Date.now() };
+      }
+      btn.classList.toggle('liked', !wasLiked);
+      btn.classList.add('pop', 'saving');
+      btn.addEventListener('animationend', () => btn.classList.remove('pop'), {once:true});
+      refreshBadge();
+      setStatus('saving…');
+
+      try {
+        await apiLike(action, card);
+        setStatus(wasLiked ? 'unliked ✓' : 'liked ✓');
+      } catch(e) {
+        // Roll back
+        if (wasLiked) likes[id] = {};
+        else delete likes[id];
+        btn.classList.toggle('liked', wasLiked);
+        refreshBadge();
+        setStatus('save failed — check console', true);
+        console.error(e);
+      } finally {
+        btn.classList.remove('saving');
+      }
+    });
+  });
+
+  // Liked panel
+  function renderLiked() {
+    const entries = Object.values(likes).sort((a,b) => (b.likedAt||0)-(a.likedAt||0));
+    const box = document.getElementById('liked-cards');
+    if (!entries.length) {
+      box.innerHTML = '<div class="liked-empty">No liked posts yet. Hit ♥ on any card.</div>';
+      return;
+    }
+    box.innerHTML = entries.map(p => `
+      <div class="card" data-id="${p.id}" data-title="${p.title}"
+           data-source="${p.source}" data-date="${p.date}"
+           data-cat-label="${p.cat}" data-link="${p.link}"
+           data-summary="${p.summary||''}">
+        <button class="like-btn liked" title="Unlike">♥</button>
+        <div class="card-meta">
+          <span>${p.source}</span> · <span>${p.date}</span>
+          <span class="tag">${p.cat}</span>
+          <span class="tag" style="opacity:.55">saved ${new Date(p.likedAt).toLocaleDateString()}</span>
+        </div>
+        <h3><a href="${p.link}" target="_blank" rel="noopener">${p.title}</a></h3>
+        ${p.summary ? `<p>${p.summary}</p>` : ''}
+        <p class="unlike-hint">Click ♥ to remove</p>
+      </div>`).join('');
+
+    box.querySelectorAll('.like-btn').forEach(btn => {
+      const card = btn.closest('.card');
+      btn.addEventListener('click', async () => {
+        const id = card.dataset.id;
+        delete likes[id];
+        btn.classList.add('saving');
+        setStatus('saving…');
+        try {
+          await apiLike('unlike', card);
+          setStatus('unliked ✓');
+        } catch(e) {
+          setStatus('save failed', true);
+          console.error(e);
+        }
+        refreshBadge();
+        renderLiked();
+        const feedBtn = document.querySelector(`#feed-view [data-id="${id}"] .like-btn`);
+        if (feedBtn) feedBtn.classList.remove('liked');
+      });
+    });
+  }
+
+  // Tabs
+  const feedView  = document.getElementById('feed-view');
+  const likedView = document.getElementById('liked-view');
+  const likedTab  = document.getElementById('liked-tab');
+  const tabBtns   = document.querySelectorAll('.tab-btn:not(#liked-tab)');
+  const allCards  = document.querySelectorAll('#feed-view .card');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      likedTab.classList.remove('active');
+      btn.classList.add('active');
+      feedView.classList.remove('hidden');
+      likedView.classList.remove('active');
+      const cat = btn.dataset.cat;
+      allCards.forEach(c => {
+        c.style.display = (cat === 'all' || c.dataset.cat === cat) ? '' : 'none';
+      });
+    });
+  });
+
+  likedTab.addEventListener('click', () => {
+    tabBtns.forEach(b => b.classList.remove('active'));
+    likedTab.classList.add('active');
+    feedView.classList.add('hidden');
+    likedView.classList.add('active');
+    renderLiked();
+  });
+
+  // Boot
+  (async () => {
+    setStatus('loading likes…');
+    await loadLikes();
+    document.querySelectorAll('#feed-view .card').forEach(card => {
+      if (likes[card.dataset.id]) card.querySelector('.like-btn')?.classList.add('liked');
+    });
+    refreshBadge();
+    setStatus('');
+  })();
+</script>
 </body>
 </html>

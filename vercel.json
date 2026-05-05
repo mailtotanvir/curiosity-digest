@@ -1,11 +1,3 @@
 {
-  "functions": {
-    "api/like.py": {
-      "runtime": "python3.12"
-    }
-  },
-  "routes": [
-    { "src": "/api/like", "dest": "/api/like.py" },
-    { "src": "/(.*)",     "dest": "/$1" }
-  ]
+"outputDirectory":"."
 }

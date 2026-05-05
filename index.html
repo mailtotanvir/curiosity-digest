@@ -21,28 +21,26 @@
     body { font-family:system-ui,-apple-system,sans-serif; background:var(--bg);
            color:var(--heading); max-width:820px; margin:0 auto;
            padding:2rem 1.25rem 4rem; line-height:1.6 }
-
-    /* Header */
     header { margin-bottom:1.75rem }
     h1 { font-size:1.75rem; font-weight:800; margin-bottom:.3rem }
     .meta { color:var(--muted); font-size:.875rem }
     .meta a { color:var(--accent); text-decoration:none }
     .meta a:hover { text-decoration:underline }
+    .status { font-size:.75rem; color:var(--muted); margin-left:.5rem }
+    .status.err { color:#ef4444 }
 
-    /* Tabs */
     .tabs { display:flex; flex-wrap:wrap; gap:.4rem; margin:1.25rem 0 1.5rem }
     .tab-btn { background:var(--surface); border:1px solid var(--border);
                color:var(--muted); border-radius:999px; padding:.3rem .85rem;
                font-size:.8rem; cursor:pointer; transition:all .15s;
                display:flex; align-items:center; gap:.35rem }
-    .tab-btn:hover, .tab-btn.active { border-color:var(--accent);
+    .tab-btn:hover,.tab-btn.active { border-color:var(--accent);
                color:var(--accent); background:var(--tag-bg) }
     .badge { background:var(--like-on); color:#fff; border-radius:999px;
              padding:0 6px; font-size:.7rem; font-weight:700;
              display:none; line-height:1.6 }
     .badge.visible { display:inline }
 
-    /* Cards */
     .card { position:relative; background:var(--surface);
             border:1px solid var(--border); border-radius:10px;
             padding:1.1rem 1.25rem 1.1rem 3rem;
@@ -59,25 +57,22 @@
     .card h3 a:hover { color:var(--accent) }
     .card p { font-size:.875rem; color:var(--muted) }
 
-    /* Like button */
     .like-btn { position:absolute; left:.9rem; top:1.05rem;
                 background:none; border:none; cursor:pointer;
                 font-size:1.3rem; line-height:1; padding:2px;
-                color:var(--like-off); transition:color .15s, transform .15s }
+                color:var(--like-off); transition:color .15s,transform .15s }
     .like-btn:hover { transform:scale(1.25) }
     .like-btn.liked { color:var(--like-on) }
+    .like-btn.saving { opacity:.4; pointer-events:none }
     .like-btn.pop { animation:pop .25s ease }
     @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.5)} 100%{transform:scale(1)} }
 
-    /* Views */
     #liked-view { display:none }
     #liked-view.active { display:block }
     #feed-view.hidden { display:none }
-
     .liked-header { font-size:.875rem; color:var(--muted); margin-bottom:1.25rem }
-    .liked-empty { text-align:center; color:var(--muted); padding:3rem 0; font-size:.95rem }
+    .liked-empty { text-align:center; color:var(--muted); padding:3rem 0 }
     .unlike-hint { font-size:.72rem; color:var(--muted); margin-top:.25rem; opacity:.7 }
-
     .empty { text-align:center; color:var(--muted); padding:3rem 0 }
     footer { margin-top:3rem; padding-top:1rem; border-top:1px solid var(--border);
              font-size:.78rem; color:var(--muted); text-align:center }
@@ -88,9 +83,10 @@
 <header>
   <h1>🔭 Curiosity Digest</h1>
   <p class="meta">
-    Updated May 04, 2026 at 20:34 UTC &nbsp;·&nbsp;
-    42 posts &nbsp;·&nbsp;
-    <a href="rejected.html">16 filtered →</a>
+    Updated May 05, 2026 at 13:24 UTC &nbsp;·&nbsp; 42 posts &nbsp;·&nbsp;
+    <a href="rejected.html">16 filtered →</a> &nbsp;·&nbsp;
+    <a href="https://raw.githubusercontent.com/mailtotanvir/curiosity-digest/main/likes.json" target="_blank">likes.json →</a>
+    <span class="status" id="status"></span>
   </p>
 </header>
 
@@ -118,9 +114,46 @@
   </button>
 </div>
 
-<!-- Feed -->
 <div id="feed-view">
 
+  
+  <div class="card"
+       data-id="56445ec58aac"
+       data-cat="Science"
+       data-title="Quantum computers simulated their biggest molecule yet – with help"
+       data-source="New Scientist"
+       data-date="May 05"
+       data-cat-label="Science"
+       data-link="https://www.newscientist.com/article/2525277-quantum-computers-simulated-their-biggest-molecule-yet-with-help/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
+       data-summary="Two quantum computers and two supercomputers teamed up to break the record for the biggest molecule yet to be simulated using quantum hardware">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>New Scientist</span> · <span>May 05</span>
+      <span class="tag">Science</span>
+      <span class="tag" style="opacity:.6">keyword match</span>
+    </div>
+    <h3><a href="https://www.newscientist.com/article/2525277-quantum-computers-simulated-their-biggest-molecule-yet-with-help/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home" target="_blank" rel="noopener">Quantum computers simulated their biggest molecule yet – with help</a></h3>
+    <p>Two quantum computers and two supercomputers teamed up to break the record for the biggest molecule yet to be simulated using quantum hardware</p>
+  </div>
+  
+  <div class="card"
+       data-id="9bd2eac9e2b3"
+       data-cat="Astronomy"
+       data-title="Ahuachapán and Its Restive Neighbors"
+       data-source="NASA News"
+       data-date="May 05"
+       data-cat-label="Astronomy"
+       data-link="https://science.nasa.gov/earth/earth-observatory/ahuachapan-and-its-restive-neighbors/"
+       data-summary="From a geothermal hotspot to the one-time “Lighthouse of the Pacific,” the heat is on beneath the volcanic landscape of western El Salvador.">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>NASA News</span> · <span>May 05</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.6">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://science.nasa.gov/earth/earth-observatory/ahuachapan-and-its-restive-neighbors/" target="_blank" rel="noopener">Ahuachapán and Its Restive Neighbors</a></h3>
+    <p>From a geothermal hotspot to the one-time “Lighthouse of the Pacific,” the heat is on beneath the volcanic landscape of western El Salvador.</p>
+  </div>
   
   <div class="card"
        data-id="ecb0d5f5b259"
@@ -131,7 +164,7 @@
        data-cat-label="Biology"
        data-link="https://www.quantamagazine.org/the-hidden-mathematical-dance-inside-plant-cells-20260504/"
        data-summary="The sunlight-collecting organelles known as chloroplasts solve a packing problem: how to optimize photosynthesis without sustaining damage from dangerously intense rays.            The post The Hidden Mathematical Dance …">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>Quanta Magazine</span> · <span>May 04</span>
       <span class="tag">Biology</span>
@@ -150,7 +183,7 @@
        data-cat-label="Science"
        data-link="https://www.newscientist.com/article/2525175-tiny-frozen-world-unexpectedly-appears-to-have-an-atmosphere/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
        data-summary="A 500-kilometre-wide object in a similar orbit to Pluto challenges our assumptions about small bodies in the outer solar system">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>New Scientist</span> · <span>May 04</span>
       <span class="tag">Science</span>
@@ -169,7 +202,7 @@
        data-cat-label="Science"
        data-link="https://www.newscientist.com/article/2524958-300-year-old-experiment-could-become-worlds-best-dark-matter-detector/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
        data-summary="An update to an experiment run by Henry Cavendish in 1773 could be a cheaper and faster way to spot a potential dark matter particle – and may be 10,000 times more sensitive">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>New Scientist</span> · <span>May 04</span>
       <span class="tag">Science</span>
@@ -188,7 +221,7 @@
        data-cat-label="Science"
        data-link="https://www.newscientist.com/article/2525104-the-greatest-david-attenborough-documentaries-you-really-need-to-watch/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
        data-summary="To mark David Attenborough turning 100, New Scientist staff have been set a tricky task: pick your favourite of his many amazing documentaries...">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>New Scientist</span> · <span>May 04</span>
       <span class="tag">Science</span>
@@ -196,6 +229,25 @@
     </div>
     <h3><a href="https://www.newscientist.com/article/2525104-the-greatest-david-attenborough-documentaries-you-really-need-to-watch/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home" target="_blank" rel="noopener">The greatest David Attenborough documentaries you really need to watch</a></h3>
     <p>To mark David Attenborough turning 100, New Scientist staff have been set a tricky task: pick your favourite of his many amazing documentaries...</p>
+  </div>
+  
+  <div class="card"
+       data-id="67e53ba38e5a"
+       data-cat="Astronomy"
+       data-title="NASA Welcomes Ireland as Newest Artemis Accords Signatory"
+       data-source="NASA News"
+       data-date="May 04"
+       data-cat-label="Astronomy"
+       data-link="https://www.nasa.gov/missions/artemis/nasa-welcomes-ireland-as-newest-artemis-accords-signatory/"
+       data-summary="Ireland signed the Artemis Accords Monday during a signing ceremony hosted by NASA, becoming the latest nation to commit to the responsible exploration of space for all humanity. Ireland, a longstanding member of ESA (Eu…">
+    <button class="like-btn" aria-label="Like">♥</button>
+    <div class="card-meta">
+      <span>NASA News</span> · <span>May 04</span>
+      <span class="tag">Astronomy</span>
+      <span class="tag" style="opacity:.6">trusted source (Astronomy)</span>
+    </div>
+    <h3><a href="https://www.nasa.gov/missions/artemis/nasa-welcomes-ireland-as-newest-artemis-accords-signatory/" target="_blank" rel="noopener">NASA Welcomes Ireland as Newest Artemis Accords Signatory</a></h3>
+    <p>Ireland signed the Artemis Accords Monday during a signing ceremony hosted by NASA, becoming the latest nation to commit to the responsible exploration of space for all humanity. Ireland, a longstanding member of ESA (Eu…</p>
   </div>
   
   <div class="card"
@@ -207,7 +259,7 @@
        data-cat-label="Astronomy"
        data-link="https://www.nasa.gov/technology/nasa-fosters-development-of-lunar-resource-seeking-technologies/"
        data-summary="To support long-duration missions to the Moon and Mars, NASA and industry are developing technologies that can extract resources such as hydrogen and helium-3 from lunar soil, known as regolith. This capability, known as…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>NASA News</span> · <span>May 04</span>
       <span class="tag">Astronomy</span>
@@ -226,7 +278,7 @@
        data-cat-label="Astronomy"
        data-link="https://www.nasa.gov/missions/artemis/nasa-welcomes-malta-as-newest-artemis-accords-signatory/"
        data-summary="The Republic of Malta became the 65th signatory to the Artemis Accords on Monday during a ceremony in the town of Kalkara with NASA and U.S. Department of State officials present. “Today, it’s my pleasure to welcome the …">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>NASA News</span> · <span>May 04</span>
       <span class="tag">Astronomy</span>
@@ -245,7 +297,7 @@
        data-cat-label="Astronomy"
        data-link="https://science.nasa.gov/learning-resources/science-activation/breaking-barriers-at-3rd-annual-findings-from-the-field-symposium/"
        data-summary="This year’s Findings from the Field Student Research Symposium welcomed 106 students, grades four through eight, 29 educators, and 15 Subject Matter Experts, and it featured 68 research posters, 14 lightning talks, and 5…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>NASA News</span> · <span>May 04</span>
       <span class="tag">Astronomy</span>
@@ -264,7 +316,7 @@
        data-cat-label="Astronomy"
        data-link="https://www.nasa.gov/missions/artemis/blue-origin-moon-lander-completes-testing-at-nasa-vacuum-chamber/"
        data-summary="Also known as Endurance, MK1 is an uncrewed cargo lander funded by Blue Origin as a commercial demonstration mission to advance Human Landing System capabilities in support of NASA’s Artemis program. The tests in Chamber…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>NASA News</span> · <span>May 04</span>
       <span class="tag">Astronomy</span>
@@ -283,7 +335,7 @@
        data-cat-label="Astronomy"
        data-link="https://www.nasa.gov/image-article/hubble-spots-a-starry-spiral/"
        data-summary="In this new picture from NASA&amp;#8217;s&amp;#160;Hubble Space Telescope, a spiral galaxy glittering with star clusters is the center of attention. NGC 3137 is located 53 million light-years away in the constellation&amp;#160;Antli…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>NASA News</span> · <span>May 04</span>
       <span class="tag">Astronomy</span>
@@ -302,7 +354,7 @@
        data-cat-label="Astronomy"
        data-link="https://science.nasa.gov/missions/tess/for-nasas-tess-stellar-eclipses-shed-light-on-possible-new-worlds/"
        data-summary="A study of NASA’s TESS (Transiting Exoplanet Survey Satellite) data on stellar pairs undergoing mutual eclipses has uncovered more than two dozen candidate exoplanets, or worlds beyond our solar system. This method allow…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>NASA News</span> · <span>May 04</span>
       <span class="tag">Astronomy</span>
@@ -321,7 +373,7 @@
        data-cat-label="Astronomy"
        data-link="https://www.nasa.gov/missions/lageos/lageos-an-earth-science-mission-built-for-enduring-precision/"
        data-summary="On May 4, 1976, a spacecraft resembling a disco ball entered orbit almost 3,700 miles (6,000 kilometers) above Earth. This shiny, two‑foot‑wide (60‑centimeter) sphere called the Laser Geodynamics Satellite, or LAGEOS, is…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>NASA News</span> · <span>May 04</span>
       <span class="tag">Astronomy</span>
@@ -340,7 +392,7 @@
        data-cat-label="Astronomy"
        data-link="https://science.nasa.gov/earth/earth-observatory/record-setting-retreat-of-hektoria-glacier/"
        data-summary="Scientists relied on satellite data to understand how the Antarctic glacier lost so much ice so rapidly.">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>NASA News</span> · <span>May 04</span>
       <span class="tag">Astronomy</span>
@@ -360,8 +412,10 @@
        data-link="https://www.youtube.com/watch?v=SAtFZPtbMpI"
        data-summary="Rubik&#39;s Cube combinations quickly lead to some unimaginably large numbers. More links &amp; stuff in full description below ↓↓↓
 
-Featuring Richard Elwes. More Richard on Numberphile: https://www.youtube.com/playlist?list=PLt…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+Extra footage on odd-numbered cubes: https://youtu.be/CTb7RyTwoQ0
+
+Featuring Richard Elwes. Mor…">
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>Numberphile</span> · <span>May 04</span>
       <span class="tag">Mathematics</span>
@@ -370,7 +424,9 @@ Featuring Richard Elwes. More Richard on Numberphile: https://www.youtube.com/pl
     <h3><a href="https://www.youtube.com/watch?v=SAtFZPtbMpI" target="_blank" rel="noopener">Entirely Ridiculously Big Numbers - Numberphile</a></h3>
     <p>Rubik&#39;s Cube combinations quickly lead to some unimaginably large numbers. More links &amp; stuff in full description below ↓↓↓
 
-Featuring Richard Elwes. More Richard on Numberphile: https://www.youtube.com/playlist?list=PLt…</p>
+Extra footage on odd-numbered cubes: https://youtu.be/CTb7RyTwoQ0
+
+Featuring Richard Elwes. Mor…</p>
   </div>
   
   <div class="card"
@@ -384,7 +440,7 @@ Featuring Richard Elwes. More Richard on Numberphile: https://www.youtube.com/pl
        data-summary="This crazy machine mimics the inside of the Earth to grow diamonds. 
 
 If you dig deep into the Earth’s mantle, you’ll enter hot, plastic-like rock filled with carbon atoms. These atoms are squeezed together over millions…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>Cleo Abram</span> · <span>May 04</span>
       <span class="tag">Technology</span>
@@ -405,7 +461,7 @@ If you dig deep into the Earth’s mantle, you’ll enter hot, plastic-like rock
        data-cat-label="Nature"
        data-link="https://www.youtube.com/watch?v=ToGZ8ZkUaxY"
        data-summary="To celebrate 100 years of Sir David Attenborough’s extraordinary legacy, we take a look at two remarkable species named in his honour: Sylvicanthon attenboroughi, a dung beetle, and Attenborosaurus conybeari, a prehistor…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>Nat. History Museum</span> · <span>May 04</span>
       <span class="tag">Nature</span>
@@ -426,7 +482,7 @@ If you dig deep into the Earth’s mantle, you’ll enter hot, plastic-like rock
        data-summary="Is the CIA’s Ghost Murmur technology real? Sponsored by Ground News. Go to https://ground.news/Ve for 40% off the unlimited Vantage plan. 
 
 If you’re looking for a molecular modelling kit, try Snatoms, a kit I invented w…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>Veritasium</span> · <span>May 03</span>
       <span class="tag">Physics</span>
@@ -447,7 +503,7 @@ If you’re looking for a molecular modelling kit, try Snatoms, a kit I invented
        data-cat-label="Nature"
        data-link="https://www.youtube.com/shorts/lx3xgP-iwEs"
        data-summary="Join us for another episode of The &#39;Perfect&#39; Specimen, this week Josh and Natalie are joined by curator Dr Katie Collins with three specimens all relating to the word &#39;Misunderstood&#39;.  Katie brings some fossil bivalves, …">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>Nat. History Museum</span> · <span>May 03</span>
       <span class="tag">Nature</span>
@@ -470,7 +526,7 @@ If you’re looking for a molecular modelling kit, try Snatoms, a kit I invented
 The reason is these special blue ice areas. And how they form…
 
 For more adventures i…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>Cleo Abram</span> · <span>May 02</span>
       <span class="tag">Technology</span>
@@ -493,7 +549,7 @@ For more adventures i…</p>
        data-cat-label="Experiments"
        data-link="https://www.youtube.com/watch?v=1baBzd1XPkU"
        data-summary="Checkout Freecash Here: https://bit.ly/TalYT">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>The Action Lab</span> · <span>May 02</span>
       <span class="tag">Experiments</span>
@@ -516,7 +572,7 @@ For more adventures i…</p>
 But how does it work? Museum scientist Miranda Sherlock explains.
 
 #NaturalHistoryMuseu…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>Nat. History Museum</span> · <span>May 02</span>
       <span class="tag">Nature</span>
@@ -539,7 +595,7 @@ But how does it work? Museum scientist Miranda Sherlock explains.
        data-cat-label="Biology"
        data-link="https://www.quantamagazine.org/a-treasure-trove-of-cambrian-fossils-rewrites-the-story-of-early-life-20260501/"
        data-summary="Remarkably preserved fossils found in southern China offer a fascinating window into what life looked like at the end of the Cambrian explosion, with half of the species uncovered being new to science.            The pos…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>Quanta Magazine</span> · <span>May 01</span>
       <span class="tag">Biology</span>
@@ -558,7 +614,7 @@ But how does it work? Museum scientist Miranda Sherlock explains.
        data-cat-label="Science"
        data-link="https://www.newscientist.com/article/2524665-an-unorthodox-version-of-quantum-theory-could-reveal-what-reality-is/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
        data-summary="The implications of quantum mechanics suggest reality isn&#39;t as solid as we think it is, but physicist David Bohm had a spin on the theory that restores reality. Columnist Karmela Padavic-Callaghan explores how we could t…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>New Scientist</span> · <span>May 01</span>
       <span class="tag">Science</span>
@@ -577,7 +633,7 @@ But how does it work? Museum scientist Miranda Sherlock explains.
        data-cat-label="Science"
        data-link="https://www.newscientist.com/article/2525229-2026-will-be-the-hottest-year-on-record-leading-scientist-predicts/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
        data-summary="The second half of this year will almost certainly see the start of an El Niño phase that could lead to extreme heat across much of the globe, and James Hansen expects that to make this year surpass 2024 as the hottest o…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>New Scientist</span> · <span>May 01</span>
       <span class="tag">Science</span>
@@ -596,7 +652,7 @@ But how does it work? Museum scientist Miranda Sherlock explains.
        data-cat-label="Science"
        data-link="https://www.newscientist.com/article/2524962-nhs-england-rushes-to-hide-software-over-ai-hacking-fears/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
        data-summary="National Health Service rules state that all software created with public money should be publicly available, but fears of computer-hacking AI models like Mythos have prompted a change in policy">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>New Scientist</span> · <span>May 01</span>
       <span class="tag">Science</span>
@@ -615,7 +671,7 @@ But how does it work? Museum scientist Miranda Sherlock explains.
        data-cat-label="Science"
        data-link="https://www.newscientist.com/article/2524931-why-i-explore-our-inevitable-love-for-robots-in-my-novel-luminous/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
        data-summary="Silvia Park, author of the May read for the New Scientist Book Club, reveals how a book that was originally intended to be for children took a darker route following a death in the family">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>New Scientist</span> · <span>May 01</span>
       <span class="tag">Science</span>
@@ -634,7 +690,7 @@ But how does it work? Museum scientist Miranda Sherlock explains.
        data-cat-label="Science"
        data-link="https://www.newscientist.com/article/2524921-read-an-extract-from-luminous-by-silvia-park/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
        data-summary="In this extract from Luminous, the May read for the New Scientist Book Club, we meet a mysterious robot discovered in a salvage yard in Seoul, in a future reunified Korea">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>New Scientist</span> · <span>May 01</span>
       <span class="tag">Science</span>
@@ -652,53 +708,15 @@ But how does it work? Museum scientist Miranda Sherlock explains.
        data-date="May 01"
        data-cat-label="Science"
        data-link="https://www.newscientist.com/article/2525033-will-colombia-summit-kick-start-the-end-of-the-fossil-fuel-era/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
-       data-summary="With progress at COP climate meetings stalling, 57 countries took part in the first of a new series of conferences aiming to develop roadmaps away from fossil fuels, but big emitters like China and the US were absent">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+       data-summary="With progress at COP climate meetings stalling, 57 countries took part in the first of a new series of conferences aiming to develop road maps away from fossil fuels, but big emitters like China and the US were absent">
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>New Scientist</span> · <span>May 01</span>
       <span class="tag">Science</span>
       <span class="tag" style="opacity:.6">keyword match</span>
     </div>
     <h3><a href="https://www.newscientist.com/article/2525033-will-colombia-summit-kick-start-the-end-of-the-fossil-fuel-era/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home" target="_blank" rel="noopener">Will Colombia summit kick-start the end of the fossil fuel era?</a></h3>
-    <p>With progress at COP climate meetings stalling, 57 countries took part in the first of a new series of conferences aiming to develop roadmaps away from fossil fuels, but big emitters like China and the US were absent</p>
-  </div>
-  
-  <div class="card"
-       data-id="2f54870bfd30"
-       data-cat="Astronomy"
-       data-title="NASA Kennedy Center Director Announces Plans to Retire"
-       data-source="NASA News"
-       data-date="May 01"
-       data-cat-label="Astronomy"
-       data-link="https://www.nasa.gov/news-release/nasa-kennedy-center-director-announces-plans-to-retire/"
-       data-summary="NASA announced Friday Janet Petro, center director for the agency’s Kennedy Space Center in Florida, is retiring. Prior to joining NASA, Petro worked in a variety of military and industry positions, ultimately beginning …">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
-    <div class="card-meta">
-      <span>NASA News</span> · <span>May 01</span>
-      <span class="tag">Astronomy</span>
-      <span class="tag" style="opacity:.6">trusted source (Astronomy)</span>
-    </div>
-    <h3><a href="https://www.nasa.gov/news-release/nasa-kennedy-center-director-announces-plans-to-retire/" target="_blank" rel="noopener">NASA Kennedy Center Director Announces Plans to Retire</a></h3>
-    <p>NASA announced Friday Janet Petro, center director for the agency’s Kennedy Space Center in Florida, is retiring. Prior to joining NASA, Petro worked in a variety of military and industry positions, ultimately beginning …</p>
-  </div>
-  
-  <div class="card"
-       data-id="49f6fad8fe9d"
-       data-cat="Astronomy"
-       data-title="NASA Artemis II Crew Rings Nasdaq Closing Bell"
-       data-source="NASA News"
-       data-date="May 01"
-       data-cat-label="Astronomy"
-       data-link="https://www.nasa.gov/image-article/nasa-artemis-ii-crew-rings-nasdaq-closing-bell/"
-       data-summary="Nasdaq Chair and Chief Executive Officer Adena T. Friedman, left, and NASA’s Artemis II crewmembers CSA (Canadian Space Agency) astronaut Jeremy Hansen, and NASA astronauts Christina Koch, Victor Glover, and Reid Wiseman…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
-    <div class="card-meta">
-      <span>NASA News</span> · <span>May 01</span>
-      <span class="tag">Astronomy</span>
-      <span class="tag" style="opacity:.6">trusted source (Astronomy)</span>
-    </div>
-    <h3><a href="https://www.nasa.gov/image-article/nasa-artemis-ii-crew-rings-nasdaq-closing-bell/" target="_blank" rel="noopener">NASA Artemis II Crew Rings Nasdaq Closing Bell</a></h3>
-    <p>Nasdaq Chair and Chief Executive Officer Adena T. Friedman, left, and NASA’s Artemis II crewmembers CSA (Canadian Space Agency) astronaut Jeremy Hansen, and NASA astronauts Christina Koch, Victor Glover, and Reid Wiseman…</p>
+    <p>With progress at COP climate meetings stalling, 57 countries took part in the first of a new series of conferences aiming to develop road maps away from fossil fuels, but big emitters like China and the US were absent</p>
   </div>
   
   <div class="card"
@@ -713,7 +731,7 @@ But how does it work? Museum scientist Miranda Sherlock explains.
 
 #kurzgesagt
 #inanutshell #kurzgesagt_inanutshell …">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>Kurzgesagt</span> · <span>Apr 30</span>
       <span class="tag">Science</span>
@@ -737,7 +755,7 @@ But how does it work? Museum scientist Miranda Sherlock explains.
        data-summary="This chart shows human brains size over time. They got way bigger, fast. But now they’re shrinking? (No, it’s not the phones!)
 
 About 2 million years ago something changed and it altered the course of human evolution. Ou…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>Cleo Abram</span> · <span>Apr 30</span>
       <span class="tag">Technology</span>
@@ -762,7 +780,7 @@ About 2 million years ago something changed and it altered the course of human e
 #sciencecommunicator #stevespangler #diyscience  #handsonscience #experiment 
 
 What’s Steve doing now? ► https://linktr.ee/st…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>Sick Science!</span> · <span>Apr 30</span>
       <span class="tag">Experiments</span>
@@ -785,7 +803,7 @@ What’s Steve doing now? ► https://linktr.ee/st…</p>
        data-cat-label="Nature"
        data-link="https://www.youtube.com/watch?v=9XEXBuWIs7I"
        data-summary="The reintroduction of golden eagles to the UK, the devastating impact of warming oceans on Australian seabirds, what we’re doing to protect Earth from alien microbes and the discovery of an axolotl not where it should be…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>Nat. History Museum</span> · <span>Apr 30</span>
       <span class="tag">Nature</span>
@@ -804,7 +822,7 @@ What’s Steve doing now? ► https://linktr.ee/st…</p>
        data-cat-label="Mathematics"
        data-link="https://www.quantamagazine.org/what-can-we-gain-by-losing-infinity-20260429/"
        data-summary="Ultrafinitism, a philosophy that rejects the infinite, has long been dismissed as mathematical heresy. But it is also producing new insights in math and beyond.            The post What Can We Gain by Losing Infinity? fi…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>Quanta Magazine</span> · <span>Apr 29</span>
       <span class="tag">Mathematics</span>
@@ -823,7 +841,7 @@ What’s Steve doing now? ► https://linktr.ee/st…</p>
        data-cat-label="Mathematics"
        data-link="https://www.quantamagazine.org/why-maths-final-axiom-proved-so-controversial-20260429/"
        data-summary="Zermelo-Fraenkel set theory is so widely accepted that modern mathematicians hardly think about it. But believing in its core principles didn’t come easily.            The post Why Math’s Final Axiom Proved So Controvers…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>Quanta Magazine</span> · <span>Apr 29</span>
       <span class="tag">Mathematics</span>
@@ -842,7 +860,7 @@ What’s Steve doing now? ► https://linktr.ee/st…</p>
        data-cat-label="Science"
        data-link="https://www.newscientist.com/article/2522448-why-dinosaurs-lived-much-more-complex-lives-than-we-thought/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
        data-summary="A wave of dinosaur discoveries over the past decade has completely reshaped our understanding of these long-extinct animals. Palaeontologist Dave Hone spills the secrets of how dinosaurs lived, from how social they were …">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>New Scientist</span> · <span>Apr 29</span>
       <span class="tag">Science</span>
@@ -861,7 +879,7 @@ What’s Steve doing now? ► https://linktr.ee/st…</p>
        data-cat-label="Science"
        data-link="https://www.newscientist.com/article/2524419-our-verdict-on-red-mars-mostly-great-with-a-few-quibbles/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
        data-summary="The New Scientist Book Club read Kim Stanley Robinson&#39;s acclaimed science fiction story about the first settlers on Mars in April – and had a lot to say about it">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>New Scientist</span> · <span>Apr 29</span>
       <span class="tag">Science</span>
@@ -869,25 +887,6 @@ What’s Steve doing now? ► https://linktr.ee/st…</p>
     </div>
     <h3><a href="https://www.newscientist.com/article/2524419-our-verdict-on-red-mars-mostly-great-with-a-few-quibbles/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home" target="_blank" rel="noopener">Our verdict on Red Mars: Mostly great, with a few quibbles</a></h3>
     <p>The New Scientist Book Club read Kim Stanley Robinson&#39;s acclaimed science fiction story about the first settlers on Mars in April – and had a lot to say about it</p>
-  </div>
-  
-  <div class="card"
-       data-id="6cf7161cfcc0"
-       data-cat="Science"
-       data-title="Is an AI version of Mark Zuckerberg – or any boss – a good plan?"
-       data-source="New Scientist"
-       data-date="Apr 29"
-       data-cat-label="Science"
-       data-link="https://www.newscientist.com/article/mg27035932-100-is-an-ai-version-of-mark-zuckerberg-or-any-boss-a-good-plan/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
-       data-summary="Feedback has learned that, according to reports, Meta is building an AI version of Mark Zuckerberg to interact with staff. Feedback hopes this doesn&#39;t become a trend">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
-    <div class="card-meta">
-      <span>New Scientist</span> · <span>Apr 29</span>
-      <span class="tag">Science</span>
-      <span class="tag" style="opacity:.6">keyword match</span>
-    </div>
-    <h3><a href="https://www.newscientist.com/article/mg27035932-100-is-an-ai-version-of-mark-zuckerberg-or-any-boss-a-good-plan/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home" target="_blank" rel="noopener">Is an AI version of Mark Zuckerberg – or any boss – a good plan?</a></h3>
-    <p>Feedback has learned that, according to reports, Meta is building an AI version of Mark Zuckerberg to interact with staff. Feedback hopes this doesn&#39;t become a trend</p>
   </div>
   
   <div class="card"
@@ -901,7 +900,7 @@ What’s Steve doing now? ► https://linktr.ee/st…</p>
        data-summary="The crystals that wiped out an HIV medication, almost overnight. Thanks to SoFi for sponsoring the video! Click here to sign-up for SoFi Checking and Savings: https://sofi.com/ve 
 
 If you’re looking for a molecular model…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>Veritasium</span> · <span>Apr 29</span>
       <span class="tag">Physics</span>
@@ -928,7 +927,7 @@ Here’s how the British and French built the Channel Tunnel, one of the longest
 For more stories like this, subscribe.
 
 #shor…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>Cleo Abram</span> · <span>Apr 29</span>
       <span class="tag">Technology</span>
@@ -953,7 +952,7 @@ For more stories like this, subscribe.
        data-cat-label="Science"
        data-link="https://www.newscientist.com/article/2523209-is-consciousness-more-fundamental-to-reality-than-quantum-physics/?utm_campaign=RSS%7CNSNS&amp;utm_source=NSNS&amp;utm_medium=RSS&amp;utm_content=home"
        data-summary="The idea that everything that exists can be built from the bottom up has long held sway among physicists. Now, a new kind of science is under construction that centres conscious experience – and might unravel the univers…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>New Scientist</span> · <span>Apr 28</span>
       <span class="tag">Science</span>
@@ -976,7 +975,7 @@ For more stories like this, subscribe.
 #NaturalHistoryMuseum #Mantis #Collection
 ----------------
 Subscribe to our channel for the latest natural h…">
-    <button class="like-btn" aria-label="Like" title="Like this post">♥</button>
+    <button class="like-btn" aria-label="Like">♥</button>
     <div class="card-meta">
       <span>Nat. History Museum</span> · <span>Apr 28</span>
       <span class="tag">Nature</span>
@@ -993,43 +992,115 @@ Subscribe to our channel for the latest natural h…</p>
 
 </div>
 
-<!-- Liked panel -->
 <div id="liked-view">
-  <p class="liked-header">Posts you've saved — persists across weekly updates.</p>
+  <p class="liked-header">Posts saved across all digests — stored in your repo.</p>
   <div id="liked-cards"></div>
 </div>
 
-<footer>Curiosity Digest · GitHub Actions · YouTube RSS &amp; public feeds · No tracking · Likes live in your browser</footer>
+<footer>Curiosity Digest · GitHub Actions · YouTube RSS &amp; public feeds · Likes via Vercel</footer>
 
 <script>
-  const KEY = 'curiosity_likes';
+  // No PAT here. Likes go via /api/like on this Vercel deployment.
+  const LIKES_RAW = "https://raw.githubusercontent.com/mailtotanvir/curiosity-digest/main/likes.json";
 
-  function getLikes() {
-    try { return JSON.parse(localStorage.getItem(KEY) || '{}'); }
-    catch { return {}; }
+  const statusEl = document.getElementById('status');
+  const badge    = document.getElementById('like-badge');
+  let likes = {};
+
+  function setStatus(msg, err=false) {
+    statusEl.textContent = msg;
+    statusEl.className = 'status' + (err ? ' err' : '');
+    if (msg && !err) setTimeout(() => statusEl.textContent = '', 3000);
   }
-  function saveLikes(obj) { localStorage.setItem(KEY, JSON.stringify(obj)); }
 
-  const badge = document.getElementById('like-badge');
   function refreshBadge() {
-    const n = Object.keys(getLikes()).length;
+    const n = Object.keys(likes).length;
     badge.textContent = n;
     badge.classList.toggle('visible', n > 0);
   }
 
-  function renderLiked() {
-    const entries = Object.values(getLikes())
-                          .sort((a,b) => (b.likedAt||0) - (a.likedAt||0));
-    const box = document.getElementById('liked-cards');
+  async function loadLikes() {
+    try {
+      const r = await fetch(LIKES_RAW + '?cb=' + Date.now());
+      if (r.ok) likes = await r.json();
+    } catch(e) { console.warn('Could not load likes:', e); }
+  }
 
+  // POST to our Vercel serverless function — PAT never leaves the server
+  async function apiLike(action, card) {
+    const r = await fetch('/api/like', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action,
+        id:      card.dataset.id,
+        title:   card.dataset.title,
+        source:  card.dataset.source,
+        date:    card.dataset.date,
+        cat:     card.dataset.catLabel,
+        link:    card.dataset.link,
+        summary: card.dataset.summary || '',
+      }),
+    });
+    if (!r.ok) throw new Error(`API ${r.status}: ${await r.text()}`);
+    return r.json();
+  }
+
+  // Wire feed cards
+  document.querySelectorAll('#feed-view .card').forEach(card => {
+    const id  = card.dataset.id;
+    const btn = card.querySelector('.like-btn');
+    if (!btn) return;
+
+    btn.addEventListener('click', async () => {
+      const wasLiked = !!likes[id];
+      const action   = wasLiked ? 'unlike' : 'like';
+
+      // Optimistic update
+      if (wasLiked) { delete likes[id]; }
+      else {
+        likes[id] = { id, title: card.dataset.title, source: card.dataset.source,
+                      date: card.dataset.date, cat: card.dataset.catLabel,
+                      link: card.dataset.link, summary: card.dataset.summary || '',
+                      likedAt: Date.now() };
+      }
+      btn.classList.toggle('liked', !wasLiked);
+      btn.classList.add('pop', 'saving');
+      btn.addEventListener('animationend', () => btn.classList.remove('pop'), {once:true});
+      refreshBadge();
+      setStatus('saving…');
+
+      try {
+        await apiLike(action, card);
+        setStatus(wasLiked ? 'unliked ✓' : 'liked ✓');
+      } catch(e) {
+        // Roll back
+        if (wasLiked) likes[id] = {};
+        else delete likes[id];
+        btn.classList.toggle('liked', wasLiked);
+        refreshBadge();
+        setStatus('save failed — check console', true);
+        console.error(e);
+      } finally {
+        btn.classList.remove('saving');
+      }
+    });
+  });
+
+  // Liked panel
+  function renderLiked() {
+    const entries = Object.values(likes).sort((a,b) => (b.likedAt||0)-(a.likedAt||0));
+    const box = document.getElementById('liked-cards');
     if (!entries.length) {
-      box.innerHTML = '<div class="liked-empty">No liked posts yet.<br>Hit ♥ on any card to save it here.</div>';
+      box.innerHTML = '<div class="liked-empty">No liked posts yet. Hit ♥ on any card.</div>';
       return;
     }
-
     box.innerHTML = entries.map(p => `
-      <div class="card" data-id="${p.id}">
-        <button class="like-btn liked" data-id="${p.id}" title="Unlike">♥</button>
+      <div class="card" data-id="${p.id}" data-title="${p.title}"
+           data-source="${p.source}" data-date="${p.date}"
+           data-cat-label="${p.cat}" data-link="${p.link}"
+           data-summary="${p.summary||''}">
+        <button class="like-btn liked" title="Unlike">♥</button>
         <div class="card-meta">
           <span>${p.source}</span> · <span>${p.date}</span>
           <span class="tag">${p.cat}</span>
@@ -1041,55 +1112,28 @@ Subscribe to our channel for the latest natural h…</p>
       </div>`).join('');
 
     box.querySelectorAll('.like-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const id    = btn.dataset.id;
-        const likes = getLikes();
+      const card = btn.closest('.card');
+      btn.addEventListener('click', async () => {
+        const id = card.dataset.id;
         delete likes[id];
-        saveLikes(likes);
+        btn.classList.add('saving');
+        setStatus('saving…');
+        try {
+          await apiLike('unlike', card);
+          setStatus('unliked ✓');
+        } catch(e) {
+          setStatus('save failed', true);
+          console.error(e);
+        }
         refreshBadge();
         renderLiked();
-        // sync the feed card heart if visible
         const feedBtn = document.querySelector(`#feed-view [data-id="${id}"] .like-btn`);
         if (feedBtn) feedBtn.classList.remove('liked');
       });
     });
   }
 
-  // Wire feed card hearts
-  document.querySelectorAll('#feed-view .card').forEach(card => {
-    const id  = card.dataset.id;
-    const btn = card.querySelector('.like-btn');
-    if (!btn) return;
-    if (getLikes()[id]) btn.classList.add('liked');
-
-    btn.addEventListener('click', () => {
-      const likes   = getLikes();
-      const wasLiked = !!likes[id];
-      if (wasLiked) {
-        delete likes[id];
-      } else {
-        likes[id] = {
-          id,
-          title:   card.dataset.title,
-          source:  card.dataset.source,
-          date:    card.dataset.date,
-          cat:     card.dataset.catLabel,
-          link:    card.dataset.link,
-          summary: card.dataset.summary,
-          likedAt: Date.now(),
-        };
-      }
-      saveLikes(likes);
-      btn.classList.toggle('liked', !wasLiked);
-      btn.classList.add('pop');
-      btn.addEventListener('animationend', () => btn.classList.remove('pop'), {once:true});
-      refreshBadge();
-    });
-  });
-
-  refreshBadge();
-
-  // Tab switching
+  // Tabs
   const feedView  = document.getElementById('feed-view');
   const likedView = document.getElementById('liked-view');
   const likedTab  = document.getElementById('liked-tab');
@@ -1117,6 +1161,17 @@ Subscribe to our channel for the latest natural h…</p>
     likedView.classList.add('active');
     renderLiked();
   });
+
+  // Boot
+  (async () => {
+    setStatus('loading likes…');
+    await loadLikes();
+    document.querySelectorAll('#feed-view .card').forEach(card => {
+      if (likes[card.dataset.id]) card.querySelector('.like-btn')?.classList.add('liked');
+    });
+    refreshBadge();
+    setStatus('');
+  })();
 </script>
 </body>
 </html>

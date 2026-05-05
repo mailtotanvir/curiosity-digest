@@ -1,6 +1,30 @@
 {
   "kept": [
     {
+      "id": "56445ec58aac",
+      "source": "New Scientist",
+      "title": "Quantum computers simulated their biggest molecule yet \u2013 with help",
+      "link": "https://www.newscientist.com/article/2525277-quantum-computers-simulated-their-biggest-molecule-yet-with-help/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
+      "category": "Science",
+      "date": "2026-05-05",
+      "date_str": "May 05",
+      "summary": "Two quantum computers and two supercomputers teamed up to break the record for the biggest molecule yet to be simulated using quantum hardware",
+      "feed_cats": "",
+      "reason": "keyword match"
+    },
+    {
+      "id": "9bd2eac9e2b3",
+      "source": "NASA News",
+      "title": "Ahuachap\u00e1n and Its Restive Neighbors",
+      "link": "https://science.nasa.gov/earth/earth-observatory/ahuachapan-and-its-restive-neighbors/",
+      "category": "Astronomy",
+      "date": "2026-05-05",
+      "date_str": "May 05",
+      "summary": "From a geothermal hotspot to the one-time \u201cLighthouse of the Pacific,\u201d the heat is on beneath the volcanic landscape of western El Salvador.",
+      "feed_cats": "earth observatory, human dimensions, landsat 8 / ldcm (landsat data continuity mission), topography, volcanoes",
+      "reason": "trusted source (Astronomy)"
+    },
+    {
       "id": "ecb0d5f5b259",
       "source": "Quanta Magazine",
       "title": "The Hidden Mathematical Dance Inside Plant Cells",
@@ -47,6 +71,18 @@
       "summary": "To mark David Attenborough turning 100, New Scientist staff have been set a tricky task: pick your favourite of his many amazing documentaries...",
       "feed_cats": "",
       "reason": "keyword match"
+    },
+    {
+      "id": "67e53ba38e5a",
+      "source": "NASA News",
+      "title": "NASA Welcomes Ireland as Newest Artemis Accords Signatory",
+      "link": "https://www.nasa.gov/missions/artemis/nasa-welcomes-ireland-as-newest-artemis-accords-signatory/",
+      "category": "Astronomy",
+      "date": "2026-05-04",
+      "date_str": "May 04",
+      "summary": "Ireland signed the Artemis Accords Monday during a signing ceremony hosted by NASA, becoming the latest nation to commit to the responsible exploration of space for all humanity. Ireland, a longstanding member of ESA (Eu\u2026",
+      "feed_cats": "artemis, artemis accords, office of international and interagency relations (oiir)",
+      "reason": "trusted source (Astronomy)"
     },
     {
       "id": "61df2cba8fdb",
@@ -152,7 +188,7 @@
       "category": "Mathematics",
       "date": "2026-05-04",
       "date_str": "May 04",
-      "summary": "Rubik's Cube combinations quickly lead to some unimaginably large numbers. More links & stuff in full description below \u2193\u2193\u2193\n\nFeaturing Richard Elwes. More Richard on Numberphile: https://www.youtube.com/playlist?list=PLt\u2026",
+      "summary": "Rubik's Cube combinations quickly lead to some unimaginably large numbers. More links & stuff in full description below \u2193\u2193\u2193\n\nExtra footage on odd-numbered cubes: https://youtu.be/CTb7RyTwoQ0\n\nFeaturing Richard Elwes. Mor\u2026",
       "feed_cats": "",
       "reason": "trusted source (Mathematics)"
     },
@@ -320,33 +356,9 @@
       "category": "Science",
       "date": "2026-05-01",
       "date_str": "May 01",
-      "summary": "With progress at COP climate meetings stalling, 57 countries took part in the first of a new series of conferences aiming to develop roadmaps away from fossil fuels, but big emitters like China and the US were absent",
+      "summary": "With progress at COP climate meetings stalling, 57 countries took part in the first of a new series of conferences aiming to develop road maps away from fossil fuels, but big emitters like China and the US were absent",
       "feed_cats": "",
       "reason": "keyword match"
-    },
-    {
-      "id": "2f54870bfd30",
-      "source": "NASA News",
-      "title": "NASA Kennedy Center Director Announces Plans to Retire",
-      "link": "https://www.nasa.gov/news-release/nasa-kennedy-center-director-announces-plans-to-retire/",
-      "category": "Astronomy",
-      "date": "2026-05-01",
-      "date_str": "May 01",
-      "summary": "NASA announced Friday Janet Petro, center director for the agency\u2019s Kennedy Space Center in Florida, is retiring. Prior to joining NASA, Petro worked in a variety of military and industry positions, ultimately beginning \u2026",
-      "feed_cats": "people of nasa, kennedy space center",
-      "reason": "trusted source (Astronomy)"
-    },
-    {
-      "id": "49f6fad8fe9d",
-      "source": "NASA News",
-      "title": "NASA Artemis II Crew Rings Nasdaq Closing Bell",
-      "link": "https://www.nasa.gov/image-article/nasa-artemis-ii-crew-rings-nasdaq-closing-bell/",
-      "category": "Astronomy",
-      "date": "2026-05-01",
-      "date_str": "May 01",
-      "summary": "Nasdaq Chair and Chief Executive Officer Adena T. Friedman, left, and NASA\u2019s Artemis II crewmembers CSA (Canadian Space Agency) astronaut Jeremy Hansen, and NASA astronauts Christina Koch, Victor Glover, and Reid Wiseman\u2026",
-      "feed_cats": "artemis 2, christina h. koch, g. reid wiseman, victor j. glover",
-      "reason": "trusted source (Astronomy)"
     },
     {
       "id": "f7158881f18f",
@@ -445,18 +457,6 @@
       "reason": "keyword match"
     },
     {
-      "id": "6cf7161cfcc0",
-      "source": "New Scientist",
-      "title": "Is an AI version of Mark Zuckerberg \u2013 or any boss \u2013 a good plan?",
-      "link": "https://www.newscientist.com/article/mg27035932-100-is-an-ai-version-of-mark-zuckerberg-or-any-boss-a-good-plan/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
-      "category": "Science",
-      "date": "2026-04-29",
-      "date_str": "Apr 29",
-      "summary": "Feedback has learned that, according to reports, Meta is building an AI version of Mark Zuckerberg to interact with staff. Feedback hopes this doesn't become a trend",
-      "feed_cats": "",
-      "reason": "keyword match"
-    },
-    {
       "id": "1928f4d7cf66",
       "source": "Veritasium",
       "title": "The Disaster I Never Imagined Having To Worry About",
@@ -506,6 +506,42 @@
     }
   ],
   "rejected": [
+    {
+      "id": "6ce7ef036baa",
+      "source": "New Scientist",
+      "title": "Woman in cancer remission without treatment in highly unusual case",
+      "link": "https://www.newscientist.com/article/2525186-woman-in-cancer-remission-without-treatment-in-highly-unusual-case/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
+      "category": "\u2014",
+      "date": "2026-05-05",
+      "date_str": "May 05",
+      "summary": "A biopsy of a woman's cancer seems to have triggered an immune response against the tumour, putting her into remission",
+      "feed_cats": "",
+      "reason": "no match"
+    },
+    {
+      "id": "57d51a24a6c2",
+      "source": "New Scientist",
+      "title": "The problem of cosmic inflation and how to solve it",
+      "link": "https://www.newscientist.com/article/2525116-the-problem-of-cosmic-inflation-and-how-to-solve-it/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
+      "category": "\u2014",
+      "date": "2026-05-05",
+      "date_str": "May 05",
+      "summary": "One of the best-performing models in cosmology is also one with the least physical rationale behind it. Columnist Leah Crane says this leaves us with a puzzle that could make or break physics as we know it",
+      "feed_cats": "",
+      "reason": "no match"
+    },
+    {
+      "id": "b9d146abdba5",
+      "source": "New Scientist",
+      "title": "Man destined to get Alzheimer\u2019s saved by accidental heat therapy",
+      "link": "https://www.newscientist.com/article/2524632-man-destined-to-get-alzheimers-saved-by-accidental-heat-therapy/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
+      "category": "\u2014",
+      "date": "2026-05-05",
+      "date_str": "May 05",
+      "summary": "Doug Whitney has a genetic mutation that means he should have developed Alzheimer\u2019s disease decades ago, but his long-term work in hot engine rooms may have protected him in a similar way to sauna therapy",
+      "feed_cats": "",
+      "reason": "no match"
+    },
     {
       "id": "cd11fa1e2527",
       "source": "New Scientist",
@@ -651,30 +687,6 @@
       "reason": "no match"
     },
     {
-      "id": "a57546d5da66",
-      "source": "New Scientist",
-      "title": "The best new science fiction books of May 2026",
-      "link": "https://www.newscientist.com/article/2524887-the-best-new-science-fiction-books-of-may-2026/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
-      "category": "\u2014",
-      "date": "2026-04-30",
-      "date_str": "Apr 30",
-      "summary": "New science fiction from big names including Ann Leckie, Alan Moore and Martha Wells are just some of the exciting crop of titles out this month",
-      "feed_cats": "",
-      "reason": "no match"
-    },
-    {
-      "id": "973b722b818c",
-      "source": "New Scientist",
-      "title": "The rich but complicated legacy of genome pioneer Craig Venter",
-      "link": "https://www.newscientist.com/article/2524928-the-rich-but-complicated-legacy-of-genome-pioneer-craig-venter/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
-      "category": "\u2014",
-      "date": "2026-04-30",
-      "date_str": "Apr 30",
-      "summary": "Craig Venter has died aged 79. He was at the forefront of sequencing the human genome and of synthetic biology, but divided opinion in how he went about it",
-      "feed_cats": "",
-      "reason": "no match"
-    },
-    {
       "id": "d5c746db9bfe",
       "source": "New Scientist",
       "title": "Ann Leckie continues to shine with new sci-fi novel Radiant Star",
@@ -683,18 +695,6 @@
       "date": "2026-04-29",
       "date_str": "Apr 29",
       "summary": "Set on a planet whose population lives underground, Radiant Star is Ann Leckie's latest Radch-universe novel. Its rich characterisation and meticulous world-building shine through, says our science-fiction columnist Emil\u2026",
-      "feed_cats": "",
-      "reason": "no match"
-    },
-    {
-      "id": "fe411471657d",
-      "source": "New Scientist",
-      "title": "Thought-provoking photographs capture what it feels like to have ADHD",
-      "link": "https://www.newscientist.com/article/2523950-thought-provoking-photographs-capture-what-it-feels-like-to-have-adhd/?utm_campaign=RSS%7CNSNS&utm_source=NSNS&utm_medium=RSS&utm_content=home",
-      "category": "\u2014",
-      "date": "2026-04-29",
-      "date_str": "Apr 29",
-      "summary": "These unusual images were created by visual artist Daniel Regan by submerging Polaroid photographs in his ADHD medication, to represent his experiences with the condition through art",
       "feed_cats": "",
       "reason": "no match"
     }

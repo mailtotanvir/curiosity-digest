@@ -5,10 +5,13 @@
 const https = require("https");
 
 const GH_TOKEN = process.env.GITHUB_TOKEN || "";
-const GH_REPO  = process.env.GITHUB_REPO  || "";  // e.g. "ailtotanvir/curiosity-digest"
+const GH_REPO  = process.env.GITHUB_REPO  || "";
 const FILE     = "likes.json";
 const BRANCH   = "main";
-const API_URL  = `https://api.github.com/repos/${GH_REPO}/contents/${FILE}`;
+
+// Explicitly build the path — no URL parsing, no missing protocol
+const API_HOSTNAME = "api.github.com";
+const API_PATH     = `/repos/${GH_REPO}/contents/${FILE}`;
 
 const GH_HEADERS = {
   Authorization:          `token ${GH_TOKEN}`,
@@ -20,9 +23,15 @@ const GH_HEADERS = {
 
 // ── Tiny promise wrapper around https ────────────────────────────────────────
 
-function request(url, options, body) {
+function request(method, extraHeaders, body) {
   return new Promise((resolve, reject) => {
-    const req = https.request(url, options, (res) => {
+    const options = {
+      hostname: API_HOSTNAME,
+      path:     API_PATH,
+      method,
+      headers:  { ...GH_HEADERS, ...extraHeaders },
+    };
+    const req = https.request(options, (res) => {
       let data = "";
       res.on("data", (c) => (data += c));
       res.on("end", () => {
@@ -36,23 +45,17 @@ function request(url, options, body) {
   });
 }
 
-// ── Read current likes.json from GitHub ──────────────────────────────────────
+// ── Read current likes.json ───────────────────────────────────────────────────
 
 async function getLikes() {
-  const url = new URL(API_URL);
-  const res = await request(url.hostname + url.pathname, {
-    hostname: url.hostname,
-    path:     url.pathname,
-    method:   "GET",
-    headers:  GH_HEADERS,
-  });
+  const res = await request("GET", {});
   if (res.status === 404) return { likes: {}, sha: null };
-  if (res.status !== 200) throw new Error(`GitHub GET ${res.status}`);
+  if (res.status !== 200) throw new Error(`GitHub GET ${res.status}: ${JSON.stringify(res.body)}`);
   const likes = JSON.parse(Buffer.from(res.body.content, "base64").toString());
   return { likes, sha: res.body.sha };
 }
 
-// ── Write updated likes.json back to GitHub ───────────────────────────────────
+// ── Write updated likes.json ──────────────────────────────────────────────────
 
 async function putLikes(likes, sha, action, id) {
   const content = Buffer.from(JSON.stringify(likes, null, 2)).toString("base64");
@@ -62,15 +65,7 @@ async function putLikes(likes, sha, action, id) {
     branch: BRANCH,
     ...(sha ? { sha } : {}),
   });
-
-  const url = new URL(API_URL);
-  const res = await request(url, {
-    hostname: url.hostname,
-    path:     url.pathname,
-    method:   "PUT",
-    headers:  { ...GH_HEADERS, "Content-Length": Buffer.byteLength(payload) },
-  }, payload);
-
+  const res = await request("PUT", { "Content-Length": Buffer.byteLength(payload) }, payload);
   if (res.status !== 200 && res.status !== 201)
     throw new Error(`GitHub PUT ${res.status}: ${JSON.stringify(res.body)}`);
   return res.body;
@@ -79,7 +74,6 @@ async function putLikes(likes, sha, action, id) {
 // ── Handler ───────────────────────────────────────────────────────────────────
 
 module.exports = async function handler(req, res) {
-  // CORS
   res.setHeader("Access-Control-Allow-Origin",  "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -88,11 +82,11 @@ module.exports = async function handler(req, res) {
   if (req.method !== "POST")   return res.status(405).json({ error: "POST only" });
 
   if (!GH_TOKEN || !GH_REPO)
-    return res.status(500).json({ error: "Server not configured" });
+    return res.status(500).json({ error: "Server not configured — check Vercel env vars" });
 
-  const body     = req.body || {};
-  const action   = body.action || "like";   // "like" or "unlike"
-  const id       = body.id || "";
+  const body   = req.body || {};
+  const action = body.action || "like";
+  const id     = body.id || "";
 
   if (!id) return res.status(400).json({ error: "missing id" });
 

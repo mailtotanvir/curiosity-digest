@@ -1,5 +1,6 @@
 // api/like.js — Vercel serverless function (Node.js)
-// Handles POST /api/like from the browser.
+// GET  /api/like        → returns current likes.json (always fresh, no CDN cache)
+// POST /api/like        → saves a like or unlike
 // GITHUB_TOKEN and GITHUB_REPO live in Vercel env vars only — never in HTML.
 
 const https = require("https");
@@ -9,7 +10,6 @@ const GH_REPO  = process.env.GITHUB_REPO  || "";
 const FILE     = "likes.json";
 const BRANCH   = "main";
 
-// Explicitly build the path — no URL parsing, no missing protocol
 const API_HOSTNAME = "api.github.com";
 const API_PATH     = `/repos/${GH_REPO}/contents/${FILE}`;
 
@@ -20,8 +20,6 @@ const GH_HEADERS = {
   "User-Agent":           "curiosity-digest-likes",
   "Content-Type":         "application/json",
 };
-
-// ── Tiny promise wrapper around https ────────────────────────────────────────
 
 function request(method, extraHeaders, body) {
   return new Promise((resolve, reject) => {
@@ -45,8 +43,6 @@ function request(method, extraHeaders, body) {
   });
 }
 
-// ── Read current likes.json ───────────────────────────────────────────────────
-
 async function getLikes() {
   const res = await request("GET", {});
   if (res.status === 404) return { likes: {}, sha: null };
@@ -54,8 +50,6 @@ async function getLikes() {
   const likes = JSON.parse(Buffer.from(res.body.content, "base64").toString());
   return { likes, sha: res.body.sha };
 }
-
-// ── Write updated likes.json ──────────────────────────────────────────────────
 
 async function putLikes(likes, sha, action, id) {
   const content = Buffer.from(JSON.stringify(likes, null, 2)).toString("base64");
@@ -71,18 +65,31 @@ async function putLikes(likes, sha, action, id) {
   return res.body;
 }
 
-// ── Handler ───────────────────────────────────────────────────────────────────
-
 module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin",  "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  // No-cache headers so browser always fetches fresh
+  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
 
   if (req.method === "OPTIONS") return res.status(200).end();
-  if (req.method !== "POST")   return res.status(405).json({ error: "POST only" });
 
   if (!GH_TOKEN || !GH_REPO)
     return res.status(500).json({ error: "Server not configured — check Vercel env vars" });
+
+  // ── GET — return current likes fresh from GitHub API ───────────────────
+  if (req.method === "GET") {
+    try {
+      const { likes } = await getLikes();
+      return res.status(200).json(likes);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ error: err.message });
+    }
+  }
+
+  // ── POST — save a like or unlike ────────────────────────────────────────
+  if (req.method !== "POST") return res.status(405).json({ error: "GET or POST only" });
 
   const body   = req.body || {};
   const action = body.action || "like";

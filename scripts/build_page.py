@@ -293,8 +293,6 @@ INDEX_HTML = r"""<!doctype html>
 
 <script>
   // No PAT here. Likes go via /api/like on this Vercel deployment.
-  const LIKES_RAW = "https://raw.githubusercontent.com/{{ gh_repo }}/main/likes.json";
-
   const statusEl = document.getElementById('status');
   const badge    = document.getElementById('like-badge');
   let likes = {};
@@ -313,7 +311,8 @@ INDEX_HTML = r"""<!doctype html>
 
   async function loadLikes() {
     try {
-      const r = await fetch(LIKES_RAW + '?cb=' + Date.now());
+      // GET /api/like fetches fresh from GitHub API — no CDN cache
+      const r = await fetch('/api/like');
       if (r.ok) likes = await r.json();
     } catch(e) { console.warn('Could not load likes:', e); }
   }
